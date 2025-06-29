@@ -15,7 +15,7 @@ public static class SpecificationCriteriaEvaluator
         }
 
         ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "entity");
-        var visitor = new ParameterRebinderExpression(parameter);
+        var visitor = new ParameterRebinder(parameter);
         var bodies = specification.CriteriaExpressions
             .Select(expr => visitor.Visit(expr.Body))
             .ToList();

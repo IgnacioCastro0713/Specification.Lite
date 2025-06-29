@@ -6,8 +6,11 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>12.0</LangVersion>
 		<Authors>Ignacio Menchaca</Authors>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageId>Specification.Lite</PackageId>
 		<PackageTags>Specification.Lite;Specificaion</PackageTags>
+		<PackageProjectUrl>https://github.com/IgnacioCastro0713/Specification.Lite</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/IgnacioCastro0713/Specification.Lite</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,4 +20,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.17" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 </Project>
