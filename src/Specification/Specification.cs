@@ -18,8 +18,7 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     public bool IsDistinct { get; private set; }
     public Expression<Func<TEntity, object>>? DistinctBySelector { get; private set; }
 
-    protected void AddWhere(Expression<Func<TEntity, bool>> criteriaExpression) =>
-        CriteriaExpressions.Add(criteriaExpression);
+    protected void AddWhere(Expression<Func<TEntity, bool>> criteriaExpression) => CriteriaExpressions.Add(criteriaExpression);
 
     protected void AddInclude(Expression<Func<TEntity, object>> includeExpression) => Includes.Add(includeExpression);
 
@@ -27,17 +26,24 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
 
     protected void ApplyDistinct()
     {
+        if (DistinctBySelector is not null)
+        {
+            throw new ConcurrentDistinctException();
+        }
+
         IsDistinct = true;
-        DistinctBySelector = null;
     }
 
     protected void ApplyDistinctBy<TKey>(Expression<Func<TEntity, TKey>> keySelector)
     {
+        if (IsDistinct)
+        {
+            throw new ConcurrentDistinctException();
+        }
+
         DistinctBySelector = Expression.Lambda<Func<TEntity, object>>(
             Expression.Convert(keySelector.Body, typeof(object)),
             keySelector.Parameters);
-
-        IsDistinct = false;
     }
 
     protected void AddOrderBy<TKey>(Expression<Func<TEntity, TKey>> orderByExpression)
