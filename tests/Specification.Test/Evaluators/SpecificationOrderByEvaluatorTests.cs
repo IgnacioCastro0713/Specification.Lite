@@ -1,0 +1,141 @@
+﻿using Moq;
+using Specification.Lite.Common;
+using Specification.Lite.Evaluators;
+using Specification.Lite.Exceptions;
+
+namespace Specification.Test.Evaluators;
+
+public class SpecificationOrderByEvaluatorTests
+{
+    [Fact]
+    public void ApplyOrderBy_WithNoOrderExpressions_ReturnsOriginalQuery()
+    {
+        // Arrange
+        var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
+        mockSpecification.Setup(s => s.OrderByExpressions).Returns(new List<OrderExpression<TestEntity>>());
+
+        var entities = new List<TestEntity>
+        {
+            new() { Id = 2, Name = "Test2" },
+            new() { Id = 1, Name = "Test1" }
+        };
+        IQueryable<TestEntity> query = entities.AsQueryable();
+
+        // Act
+        IQueryable<TestEntity> result = query.ApplyOrderBy(mockSpecification.Object);
+
+        // Assert
+        Assert.Equal(entities.Count, result.Count());
+        // Order should remain the same as original
+        Assert.Equal(2, result.First().Id);
+    }
+
+    [Fact]
+    public void ApplyOrderBy_WithOrderByExpression_SortsQuery()
+    {
+        // Arrange
+        var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
+        var orderExpressions = new List<OrderExpression<TestEntity>>
+        {
+            new(e => e.Id, OrderTypeEnum.OrderBy)
+        };
+        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
+
+        var entities = new List<TestEntity>
+        {
+            new() { Id = 3, Name = "Test3" },
+            new() { Id = 1, Name = "Test1" },
+            new() { Id = 2, Name = "Test2" }
+        };
+        IQueryable<TestEntity> query = entities.AsQueryable();
+
+        // Act
+        var result = query.ApplyOrderBy(mockSpecification.Object).ToList();
+
+        // Assert
+        Assert.Equal(1, result[0].Id);
+        Assert.Equal(2, result[1].Id);
+        Assert.Equal(3, result[2].Id);
+    }
+
+    [Fact]
+    public void ApplyOrderBy_WithOrderByDescendingExpression_SortsQueryDescending()
+    {
+        // Arrange
+        var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
+        var orderExpressions = new List<OrderExpression<TestEntity>>
+        {
+            new(e => e.Id, OrderTypeEnum.OrderByDescending)
+        };
+        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
+
+        var entities = new List<TestEntity>
+        {
+            new() { Id = 1, Name = "Test1" },
+            new() { Id = 2, Name = "Test2" },
+            new() { Id = 3, Name = "Test3" }
+        };
+        IQueryable<TestEntity> query = entities.AsQueryable();
+
+        // Act
+        var result = query.ApplyOrderBy(mockSpecification.Object).ToList();
+
+        // Assert
+        Assert.Equal(3, result[0].Id);
+        Assert.Equal(2, result[1].Id);
+        Assert.Equal(1, result[2].Id);
+    }
+
+    [Fact]
+    public void ApplyOrderBy_WithOrderByAndThenBy_AppliesCompoundSorting()
+    {
+        // Arrange
+        var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
+        var orderExpressions = new List<OrderExpression<TestEntity>>
+        {
+            new(e => e.Name, OrderTypeEnum.OrderBy),
+            new(e => e.Id, OrderTypeEnum.ThenBy)
+        };
+        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
+
+        var entities = new List<TestEntity>
+        {
+            new() { Id = 2, Name = "SameName" },
+            new() { Id = 1, Name = "SameName" },
+            new() { Id = 3, Name = "OtherName" }
+        };
+        IQueryable<TestEntity> query = entities.AsQueryable();
+
+        // Act
+        var result = query.ApplyOrderBy(mockSpecification.Object).ToList();
+
+        // Assert
+        Assert.Equal("OtherName", result[0].Name);
+        Assert.Equal("SameName", result[1].Name);
+        Assert.Equal("SameName", result[2].Name);
+        Assert.Equal(1, result[1].Id); // For entities with same name, should be ordered by Id
+        Assert.Equal(2, result[2].Id);
+    }
+
+    [Fact]
+    public void ApplyOrderBy_WithDuplicateOrderChain_ThrowsException()
+    {
+        // Arrange
+        var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
+        var orderExpressions = new List<OrderExpression<TestEntity>>
+        {
+            new(e => e.Id, OrderTypeEnum.OrderBy),
+            new(e => e.Name, OrderTypeEnum.OrderBy) // This should cause an exception
+        };
+        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
+
+        var entities = new List<TestEntity>
+        {
+            new() { Id = 1, Name = "Test1" }
+        };
+        IQueryable<TestEntity> query = entities.AsQueryable();
+
+        // Act & Assert
+        Assert.Throws<DuplicateOrderChainException>(() => query.ApplyOrderBy(mockSpecification.Object).ToList());
+    }
+}

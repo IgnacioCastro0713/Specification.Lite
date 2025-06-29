@@ -2,7 +2,7 @@
 
 namespace Specification.Lite.Common;
 
-internal class ParameterRebinder : ExpressionVisitor
+internal sealed class ParameterRebinder : ExpressionVisitor
 {
     private readonly ParameterExpression _parameter;
 

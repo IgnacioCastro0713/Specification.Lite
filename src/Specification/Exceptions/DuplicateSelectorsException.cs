@@ -2,8 +2,7 @@
 
 public class DuplicateSelectorsException : Exception
 {
-    private new const string
-        Message = "A selector (Select or SelectMany) must be applied to a ProjectionSpecification.";
+    private new const string Message = "A selector (Select or SelectMany) must be applied to a ProjectionSpecification.";
 
     public DuplicateSelectorsException()
         : base(Message)

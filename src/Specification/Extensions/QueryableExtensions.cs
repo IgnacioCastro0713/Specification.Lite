@@ -11,7 +11,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TEntity> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TEntity> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.ToListAsync(cancellationToken);
     }
 
@@ -21,7 +21,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TResult> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TResult> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.ToListAsync(cancellationToken);
     }
 
@@ -32,7 +32,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TEntity> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TEntity> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -42,7 +42,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TResult> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TResult> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -52,7 +52,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TEntity> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TEntity> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.SingleOrDefaultAsync(cancellationToken);
     }
 
@@ -62,7 +62,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TResult> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TResult> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.SingleOrDefaultAsync(cancellationToken);
     }
 
@@ -72,7 +72,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TEntity> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TEntity> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.AnyAsync(cancellationToken);
     }
 
@@ -82,7 +82,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        IQueryable<TResult> queryWithSpec = query.SpecifyQuery(specification);
+        IQueryable<TResult> queryWithSpec = query.SpecificationQuery(specification);
         return queryWithSpec.AnyAsync(cancellationToken);
     }
 }

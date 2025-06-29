@@ -9,8 +9,8 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     public List<Expression<Func<TEntity, bool>>> CriteriaExpressions { get; } = [];
     public List<IncludePath<TEntity>> IncludePaths { get; } = [];
     public List<OrderExpression<TEntity>> OrderByExpressions { get; } = [];
-    public int Take { get; protected set; }
-    public int Skip { get; protected set; }
+    public int Take { get; protected set; } = -1;
+    public int Skip { get; protected set; } = -1;
     public bool IsAsTracking { get; private set; }
     public bool IsAsNoTracking { get; private set; }
     public bool IsAsSplitQuery { get; private set; }
