@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<RootNamespace>Specification.Lite</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>12.0</LangVersion>
+		<Authors>Ignacio Menchaca</Authors>
+		<PackageId>Specification.Lite</PackageId>
+		<PackageTags>Specification.Lite;Specificaion</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EntityFramework" Version="6.5.1" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.17" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.17" />
+	</ItemGroup>
+
+</Project>
