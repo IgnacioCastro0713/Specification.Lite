@@ -7,8 +7,7 @@ namespace Specification.Lite;
 public abstract class Specification<TEntity> : ISpecification<TEntity>
 {
     public List<Expression<Func<TEntity, bool>>> CriteriaExpressions { get; } = [];
-    public List<Expression<Func<TEntity, object>>> Includes { get; } = [];
-    public List<string> IncludeStrings { get; } = [];
+    public List<IncludePath<TEntity>> IncludePaths { get; } = [];
     public List<OrderExpression<TEntity>> OrderByExpressions { get; } = [];
     public int Take { get; protected set; }
     public int Skip { get; protected set; }
@@ -20,9 +19,12 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
 
     protected void AddWhere(Expression<Func<TEntity, bool>> criteriaExpression) => CriteriaExpressions.Add(criteriaExpression);
 
-    protected void AddInclude(Expression<Func<TEntity, object>> includeExpression) => Includes.Add(includeExpression);
-
-    protected void AddInclude(string includeString) => IncludeStrings.Add(includeString);
+    protected IncludePath<TEntity> AddInclude(Expression<Func<TEntity, object>> includeExpression)
+    {
+        var includePath = new IncludePath<TEntity>(includeExpression);
+        IncludePaths.Add(includePath);
+        return includePath;
+    }
 
     protected void ApplyDistinct()
     {
