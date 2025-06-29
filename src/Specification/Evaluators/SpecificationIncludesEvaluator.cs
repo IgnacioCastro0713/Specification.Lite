@@ -2,7 +2,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Specification.Lite.Expressions;
+using Specification.Lite.Common;
 
 namespace Specification.Lite.Evaluators;
 

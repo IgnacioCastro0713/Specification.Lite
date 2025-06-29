@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
+using Specification.Lite.Common;
 using Specification.Lite.Exceptions;
-using Specification.Lite.Expressions;
 
 namespace Specification.Lite;
 

@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Specification.Lite.Expressions;
+using Specification.Lite.Common;
 
 namespace Specification.Lite;
 
