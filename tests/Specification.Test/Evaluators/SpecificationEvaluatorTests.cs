@@ -11,7 +11,7 @@ public class SpecificationEvaluatorTests
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
         mockSpecification.Setup(s => s.CriteriaExpressions).Returns([]);
-        mockSpecification.Setup(s => s.IncludePaths).Returns([]);
+        mockSpecification.Setup(s => s.IncludeExpressions).Returns([]);
         mockSpecification.Setup(s => s.OrderByExpressions).Returns([]);
 
         IQueryable<TestEntity> query = new List<TestEntity>().AsQueryable();
@@ -30,7 +30,7 @@ public class SpecificationEvaluatorTests
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity, TestDto>>();
         mockSpecification.Setup(s => s.CriteriaExpressions).Returns([]);
-        mockSpecification.Setup(s => s.IncludePaths).Returns([]);
+        mockSpecification.Setup(s => s.IncludeExpressions).Returns([]);
         mockSpecification.Setup(s => s.OrderByExpressions).Returns([]);
         mockSpecification.Setup(s => s.Selector).Returns((e) => new TestDto { Id = e.Id, Name = e.Name });
 

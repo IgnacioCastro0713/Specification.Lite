@@ -2,6 +2,7 @@
 using Specification.Lite.Common;
 using Specification.Lite.Evaluators;
 using Specification.Lite.Exceptions;
+using Specification.Lite.Expressions;
 
 namespace Specification.Test.Evaluators;
 

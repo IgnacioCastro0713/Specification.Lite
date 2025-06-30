@@ -58,7 +58,8 @@ public class TestEntityWithRelation
 public class TestRelatedEntity
 {
     public int Id { get; set; }
-    public string Description { get; set; } = string.Empty;
+    public string Department { get; set; } = string.Empty;
+    public int Salary { get; set; }
     public TestNestedEntity? Nested { get; set; }
     public int? NestedId { get; set; }
 }

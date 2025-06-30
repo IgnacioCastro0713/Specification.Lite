@@ -2,6 +2,7 @@
 using Specification.Lite;
 using Specification.Lite.Common;
 using Specification.Lite.Exceptions;
+using Specification.Lite.Expressions;
 
 namespace Specification.Test;
 
@@ -83,8 +84,8 @@ public class SpecificationTests
         IncludeExpression<TestEntity> result = spec.PublicAddInclude(expression);
 
         // Assert
-        Assert.Single(spec.IncludePaths);
-        Assert.Equal(result, spec.IncludePaths[0]);
+        Assert.Single(spec.IncludeExpressions);
+        Assert.Equal(result, spec.IncludeExpressions[0]);
         Assert.NotNull(result.Expression);
     }
 

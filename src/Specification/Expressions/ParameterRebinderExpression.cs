@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Specification.Lite.Common;
+namespace Specification.Lite.Expressions;
 
 internal sealed class ParameterRebinder : ExpressionVisitor
 {

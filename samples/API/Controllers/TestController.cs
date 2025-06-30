@@ -17,4 +17,10 @@ public class TestController(ITestRepository repository) : ControllerBase
     {
         return await repository.GetWithInclude();
     }
+
+    [HttpGet(nameof(GetWithOrder))]
+    public async Task<List<TestRelatedEntity>> GetWithOrder()
+    {
+        return await repository.GetWithOrder();
+    }
 }

@@ -1,13 +1,15 @@
 ﻿using System.Linq.Expressions;
+using Specification.Lite.Builders;
 using Specification.Lite.Common;
 using Specification.Lite.Exceptions;
+using Specification.Lite.Expressions;
 
 namespace Specification.Lite;
 
 public abstract class Specification<TEntity> : ISpecification<TEntity>
 {
     public List<Expression<Func<TEntity, bool>>> CriteriaExpressions { get; } = [];
-    public List<IncludeExpression<TEntity>> IncludePaths { get; } = [];
+    public List<IncludeExpression<TEntity>> IncludeExpressions { get; } = [];
     public List<OrderExpression<TEntity>> OrderByExpressions { get; } = [];
     public int Take { get; protected set; } = -1;
     public int Skip { get; protected set; } = -1;
@@ -22,7 +24,7 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     protected IncludeBuilder<TEntity, TProperty> Include<TProperty>(Expression<Func<TEntity, TProperty>> includeExpression)
     {
         var includePath = new IncludeExpression<TEntity>(includeExpression, false);
-        IncludePaths.Add(includePath);
+        IncludeExpressions.Add(includePath);
         return new IncludeBuilder<TEntity, TProperty>(includePath);
     }
 
@@ -30,8 +32,28 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
         Expression<Func<TEntity, IEnumerable<TProperty>>> includeExpression)
     {
         var includePath = new IncludeExpression<TEntity>(includeExpression, true);
-        IncludePaths.Add(includePath);
+        IncludeExpressions.Add(includePath);
         return new IncludeBuilder<TEntity, TProperty>(includePath);
+    }
+
+    protected OrderingBuilder<TEntity> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderByExpression)
+    {
+        var convertedSelector = Expression.Lambda<Func<TEntity, object>>(
+            Expression.Convert(orderByExpression.Body, typeof(object)),
+            orderByExpression.Parameters);
+        var ordering = new OrderExpression<TEntity>(convertedSelector, OrderTypeEnum.OrderBy);
+        OrderByExpressions.Add(ordering);
+        return new OrderingBuilder<TEntity>(ordering);
+    }
+
+    protected OrderingBuilder<TEntity> OrderByDescending<TKey>(Expression<Func<TEntity, TKey>> orderByDescendingExpression)
+    {
+        var convertedSelector = Expression.Lambda<Func<TEntity, object>>(
+            Expression.Convert(orderByDescendingExpression.Body, typeof(object)),
+            orderByDescendingExpression.Parameters);
+        var ordering = new OrderExpression<TEntity>(convertedSelector, OrderTypeEnum.OrderByDescending);
+        OrderByExpressions.Add(ordering);
+        return new OrderingBuilder<TEntity>(ordering);
     }
 
     protected void Distinct()
@@ -54,42 +76,6 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
         DistinctBySelector = Expression.Lambda<Func<TEntity, object>>(
             Expression.Convert(keySelector.Body, typeof(object)),
             keySelector.Parameters);
-    }
-
-    protected OrderingBuilder<TEntity> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderByExpression)
-    {
-        var convertedSelector = Expression.Lambda<Func<TEntity, object>>(
-            Expression.Convert(orderByExpression.Body, typeof(object)),
-            orderByExpression.Parameters);
-        OrderByExpressions.Add(new OrderExpression<TEntity>(convertedSelector, OrderTypeEnum.OrderBy));
-        return new OrderingBuilder<TEntity>(this);
-    }
-
-    protected OrderingBuilder<TEntity> OrderByDescending<TKey>(Expression<Func<TEntity, TKey>> orderByDescendingExpression)
-    {
-        var convertedSelector = Expression.Lambda<Func<TEntity, object>>(
-            Expression.Convert(orderByDescendingExpression.Body, typeof(object)),
-            orderByDescendingExpression.Parameters);
-        OrderByExpressions.Add(new OrderExpression<TEntity>(convertedSelector, OrderTypeEnum.OrderByDescending));
-        return new OrderingBuilder<TEntity>(this);
-    }
-
-    internal OrderingBuilder<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> thenByExpression)
-    {
-        var convertedSelector = Expression.Lambda<Func<TEntity, object>>(
-            Expression.Convert(thenByExpression.Body, typeof(object)),
-            thenByExpression.Parameters);
-        OrderByExpressions.Add(new OrderExpression<TEntity>(convertedSelector, OrderTypeEnum.ThenBy));
-        return new OrderingBuilder<TEntity>(this);
-    }
-
-    internal OrderingBuilder<TEntity> ThenByDescending<TKey>(Expression<Func<TEntity, TKey>> thenByDescendingExpression)
-    {
-        var convertedSelector = Expression.Lambda<Func<TEntity, object>>(
-            Expression.Convert(thenByDescendingExpression.Body, typeof(object)),
-            thenByDescendingExpression.Parameters);
-        OrderByExpressions.Add(new OrderExpression<TEntity>(convertedSelector, OrderTypeEnum.ThenByDescending));
-        return new OrderingBuilder<TEntity>(this);
     }
 
     protected void AsTracking()

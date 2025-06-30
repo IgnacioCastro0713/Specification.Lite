@@ -50,10 +50,11 @@ public class TestRepository : ITestRepository
         if (!context.TestRelatedEntities.Any())
         {
             context.TestRelatedEntities.AddRange(
-                new TestRelatedEntity { Id = 1, Description = "Related Description 1", NestedId = 1 },
-                new TestRelatedEntity { Id = 2, Description = "Related Description 2", NestedId = 2 },
-                new TestRelatedEntity { Id = 3, Description = "Related Description 3", NestedId = 3 },
-                new TestRelatedEntity { Id = 4, Description = "Related with no nested", NestedId = null }
+                new TestRelatedEntity { Id = 1, Department = "HR", Salary = 60000, NestedId = 1 },
+                new TestRelatedEntity { Id = 2, Department = "HR", Salary = 55000, NestedId = 2 },
+                new TestRelatedEntity { Id = 3, Department = "IT", Salary = 70000, NestedId = 3 },
+                new TestRelatedEntity { Id = 4, Department = "Sales", Salary = 65000, NestedId = null },
+                new TestRelatedEntity { Id = 5, Department = "Sales", Salary = 72000, NestedId = null }
             );
         }
 
@@ -90,13 +91,16 @@ public class TestRepository : ITestRepository
         var spec = new TestIncludeSpec();
         List<TestEntityWithRelation> list = await context.TestEntityWithRelations
             .ToListAsync(spec);
+        return list;
+    }
 
+    public async Task<List<TestRelatedEntity>> GetWithOrder()
+    {
+        await using var context = new TestDbContext();
 
-        //List<TestEntityWithRelation> list = await context.TestEntityWithRelations
-        //    .Where(relation => relation.Id == 1)
-        //    .Include(relation => relation.Related)
-        //    .ToListAsync();
-
+        var spec = new TestOrderSpec();
+        List<TestRelatedEntity> list = await context.TestRelatedEntities
+            .ToListAsync(spec);
         return list;
     }
 }
@@ -105,4 +109,5 @@ public interface ITestRepository
 {
     Task<List<TestEntity>> GetWhere();
     Task<List<TestEntityWithRelation>> GetWithInclude();
+    Task<List<TestRelatedEntity>> GetWithOrder();
 }

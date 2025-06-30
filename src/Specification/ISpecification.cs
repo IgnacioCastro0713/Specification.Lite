@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
-using Specification.Lite.Common;
+using Specification.Lite.Expressions;
 
 namespace Specification.Lite;
 
 public interface ISpecification<TEntity>
 {
     List<Expression<Func<TEntity, bool>>> CriteriaExpressions { get; }
-    List<IncludeExpression<TEntity>> IncludePaths { get; }
+    List<IncludeExpression<TEntity>> IncludeExpressions { get; }
     List<OrderExpression<TEntity>> OrderByExpressions { get; }
     int Take { get; }
     int Skip { get; }

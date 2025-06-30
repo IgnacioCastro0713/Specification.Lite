@@ -1,5 +1,7 @@
-﻿using Specification.Lite.Common;
+﻿using System.Linq.Expressions;
+using Specification.Lite.Common;
 using Specification.Lite.Exceptions;
+using Specification.Lite.Expressions;
 
 namespace Specification.Lite.Evaluators;
 
@@ -10,47 +12,42 @@ public static class SpecificationOrderByEvaluator
         ISpecification<TEntity> specification) where TEntity : class
     {
         IOrderedQueryable<TEntity>? orderedQuery = null;
-        int chainCount = 0;
+        int countPrimaryOrder = 0;
+
         foreach (OrderExpression<TEntity> orderExpression in specification.OrderByExpressions)
         {
-            switch (orderExpression)
+            if (countPrimaryOrder == 1)
             {
-                case { OrderType: OrderTypeEnum.OrderBy }:
-                    {
-                        chainCount++;
-                        if (chainCount == 2)
-                        {
-                            throw new DuplicateOrderChainException();
-                        }
+                throw new DuplicateOrderChainException();
+            }
 
-                        orderedQuery = query.OrderBy(orderExpression.KeySelector);
-                        break;
-                    }
-                case { OrderType: OrderTypeEnum.OrderByDescending }:
-                    {
-                        chainCount++;
-                        if (chainCount == 2)
-                        {
-                            throw new DuplicateOrderChainException();
-                        }
+            if (orderExpression.OrderType == OrderTypeEnum.OrderBy)
+            {
+                orderedQuery = query.OrderBy(orderExpression.Expression);
+                countPrimaryOrder++;
+            }
 
-                        orderedQuery = query.OrderByDescending(orderExpression.KeySelector);
-                        break;
-                    }
-                case { OrderType: OrderTypeEnum.ThenBy }:
-                    orderedQuery = orderedQuery!.ThenBy(orderExpression.KeySelector);
-                    break;
-                case { OrderType: OrderTypeEnum.ThenByDescending }:
-                    orderedQuery = orderedQuery!.ThenByDescending(orderExpression.KeySelector);
-                    break;
+            if (orderExpression.OrderType == OrderTypeEnum.OrderByDescending)
+            {
+                orderedQuery = query.OrderByDescending(orderExpression.Expression);
+                countPrimaryOrder++;
+            }
+
+
+            foreach ((Expression<Func<TEntity, object>> thenExpression, OrderTypeEnum thenOrderType) in orderExpression.ThenOrders)
+            {
+                if (thenOrderType == OrderTypeEnum.ThenBy)
+                {
+                    orderedQuery = orderedQuery!.ThenBy(thenExpression);
+                }
+
+                if (thenOrderType == OrderTypeEnum.ThenByDescending)
+                {
+                    orderedQuery = orderedQuery!.ThenByDescending(thenExpression);
+                }
             }
         }
 
-        if (orderedQuery is not null)
-        {
-            query = orderedQuery;
-        }
-
-        return query;
+        return orderedQuery ?? query;
     }
 }

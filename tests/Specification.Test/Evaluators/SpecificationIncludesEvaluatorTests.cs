@@ -1,6 +1,6 @@
 ﻿using Moq;
-using Specification.Lite.Common;
 using Specification.Lite.Evaluators;
+using Specification.Lite.Expressions;
 
 namespace Specification.Test.Evaluators;
 
@@ -33,7 +33,7 @@ public class SpecificationIncludesEvaluatorTests
     {
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
-        mockSpecification.Setup(s => s.IncludePaths).Returns([]);
+        mockSpecification.Setup(s => s.IncludeExpressions).Returns([]);
 
         var entities = new List<TestEntity>
         {
@@ -55,7 +55,7 @@ public class SpecificationIncludesEvaluatorTests
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntityWithRelation>>();
         var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
-        mockSpecification.Setup(s => s.IncludePaths).Returns([includePath]);
+        mockSpecification.Setup(s => s.IncludeExpressions).Returns([includePath]);
 
         // No actual query execution here since we can't truly test includes without a DbContext
         Assert.NotNull(includePath.Expression);
@@ -72,7 +72,7 @@ public class SpecificationIncludesEvaluatorTests
         var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
         includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
 
-        mockSpecification.Setup(s => s.IncludePaths).Returns([includePath]);
+        mockSpecification.Setup(s => s.IncludeExpressions).Returns([includePath]);
 
         // Assert
         Assert.NotNull(includePath.Expression);
