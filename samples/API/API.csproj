@@ -15,8 +15,4 @@
     <ProjectReference Include="..\..\src\Specification\Specification.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Specifications\" />
-  </ItemGroup>
-
 </Project>
