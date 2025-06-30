@@ -10,7 +10,7 @@ public class SpecificationDistinctnessEvaluatorTests
 {
     public sealed class TestDistinctSpecification : Specification<TestEntity>
     {
-        public TestDistinctSpecification() => ApplyDistinct();
+        public TestDistinctSpecification() => Distinct();
     }
 
 

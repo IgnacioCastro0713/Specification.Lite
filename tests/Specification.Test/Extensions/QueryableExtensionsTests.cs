@@ -10,7 +10,7 @@ public class QueryableExtensionsTests
 
     public sealed class TestProjectionSpecification : Specification<TestEntity, TestDto>
     {
-        public TestProjectionSpecification() => ApplySelect(e => new TestDto { Id = e.Id, Name = e.Name });
+        public TestProjectionSpecification() => Select(e => new TestDto { Id = e.Id, Name = e.Name });
     }
 
     [Fact]

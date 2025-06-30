@@ -54,7 +54,7 @@ public class SpecificationIncludesEvaluatorTests
     {
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntityWithRelation>>();
-        var includePath = new IncludePath<TestEntityWithRelation>(e => e.Related!);
+        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
         mockSpecification.Setup(s => s.IncludePaths).Returns([includePath]);
 
         // No actual query execution here since we can't truly test includes without a DbContext
@@ -69,7 +69,7 @@ public class SpecificationIncludesEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntityWithRelation>>();
 
         // Create include path with then includes
-        var includePath = new IncludePath<TestEntityWithRelation>(e => e.Related!);
+        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
         includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
 
         mockSpecification.Setup(s => s.IncludePaths).Returns([includePath]);
@@ -83,7 +83,7 @@ public class SpecificationIncludesEvaluatorTests
     public void IncludePath_AddThenInclude_AddsThenIncludeToList()
     {
         // Arrange
-        var includePath = new IncludePath<TestEntityWithRelation>(e => e.Related!);
+        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
 
         // Act
         includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
@@ -96,10 +96,10 @@ public class SpecificationIncludesEvaluatorTests
     public void IncludePath_AddThenInclude_ReturnsIncludePath()
     {
         // Arrange
-        var includePath = new IncludePath<TestEntityWithRelation>(e => e.Related!);
+        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
 
         // Act
-        IncludePath<TestEntityWithRelation> result = includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
+        IncludeExpression<TestEntityWithRelation> result = includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
 
         // Assert
         Assert.Same(includePath, result);
@@ -109,7 +109,7 @@ public class SpecificationIncludesEvaluatorTests
     public void IncludePath_AddThenInclude_CanBeChained()
     {
         // Arrange
-        var includePath = new IncludePath<TestEntityWithRelation>(e => e.Related!);
+        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
 
         // Act - chain multiple ThenIncludes (this mimics the real-world usage)
         includePath
@@ -124,6 +124,6 @@ public class SpecificationIncludesEvaluatorTests
     public void IncludePath_Constructor_ThrowsOnNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => new IncludePath<TestEntityWithRelation>(null!));
+        Assert.Throws<ArgumentNullException>(() => new IncludeExpression<TestEntityWithRelation>(null!));
     }
 }

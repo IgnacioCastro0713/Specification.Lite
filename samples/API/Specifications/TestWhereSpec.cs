@@ -6,7 +6,7 @@ public class TestWhereSpec : Specification<TestEntity>
 {
     public TestWhereSpec()
     {
-        AddWhere(entity => entity.Id == 4 || entity.Id == 1);
-        AddWhere(entity => entity.Id == 4);
+        Where(entity => entity.Id == 4 || entity.Id == 1);
+        Where(entity => entity.Id == 4);
     }
 }

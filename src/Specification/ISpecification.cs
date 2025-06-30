@@ -6,7 +6,7 @@ namespace Specification.Lite;
 public interface ISpecification<TEntity>
 {
     List<Expression<Func<TEntity, bool>>> CriteriaExpressions { get; }
-    List<IncludePath<TEntity>> IncludePaths { get; }
+    List<IncludeExpression<TEntity>> IncludePaths { get; }
     List<OrderExpression<TEntity>> OrderByExpressions { get; }
     int Take { get; }
     int Skip { get; }

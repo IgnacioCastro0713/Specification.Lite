@@ -11,4 +11,10 @@ public class TestController(ITestRepository repository) : ControllerBase
     {
         return await repository.GetWhere();
     }
+
+    [HttpGet(nameof(GetWithInclude))]
+    public async Task<List<TestEntityWithRelation>> GetWithInclude()
+    {
+        return await repository.GetWithInclude();
+    }
 }

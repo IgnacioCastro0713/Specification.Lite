@@ -8,68 +8,80 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationIncludesEvaluator
 {
+    private static readonly MethodInfo IncludeMethodInfo = typeof(EntityFrameworkQueryableExtensions)
+        .GetMethods(BindingFlags.Public | BindingFlags.Static)
+        .First(m => m.Name == "Include" && m.GetParameters().Length == 2);
+
+    private static readonly Dictionary<bool, MethodInfo> ThenIncludeMethods = GetThenIncludeMethods();
+
+    private static Dictionary<bool, MethodInfo> GetThenIncludeMethods()
+    {
+        var methods = typeof(EntityFrameworkQueryableExtensions)
+            .GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Where(m => m.Name == "ThenInclude" && m.GetParameters().Length == 2)
+            .ToList();
+
+        var result = new Dictionary<bool, MethodInfo>();
+
+        foreach (MethodInfo method in methods)
+        {
+            if (!method.IsGenericMethodDefinition ||
+                method.GetParameters().Length != 2 ||
+                !method.GetParameters()[0].ParameterType.IsGenericType ||
+                method.GetParameters()[0].ParameterType.GetGenericTypeDefinition() != typeof(IIncludableQueryable<,>))
+            {
+                continue;
+            }
+
+            Type secondGenericArg = method.GetParameters()[0].ParameterType.GetGenericArguments()[1];
+
+            bool isCollection = secondGenericArg.IsGenericType &&
+                                (secondGenericArg.GetGenericTypeDefinition() == typeof(ICollection<>) ||
+                                 secondGenericArg.GetGenericTypeDefinition() == typeof(IEnumerable<>) ||
+                                 secondGenericArg.GetGenericTypeDefinition() == typeof(List<>));
+
+            result[isCollection] = method;
+        }
+
+        return result;
+    }
+
     public static IQueryable<TEntity> ApplyIncludes<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
         IQueryable<TEntity> currentQuery = query;
 
-        foreach (IncludePath<TEntity> includePath in specification.IncludePaths)
+        foreach (IncludeExpression<TEntity> includePath in specification.IncludePaths)
         {
-            IIncludableQueryable<TEntity, object> includable = currentQuery.Include(includePath.Expression);
+            Type entityType = typeof(TEntity);
+            Type propertyType = includePath.Expression.ReturnType;
+
+            MethodInfo includeMethod = IncludeMethodInfo.MakeGenericMethod(entityType, propertyType);
+            object? includableQuery = includeMethod.Invoke(null, [currentQuery, includePath.Expression]);
 
             if (!includePath.ThenIncludes.Any())
             {
-                currentQuery = includable;
+                currentQuery = (IQueryable<TEntity>)includableQuery!;
                 continue;
             }
 
-            currentQuery = ApplyThenIncludes(
-                includable,
-                typeof(TEntity),
-                includePath.Expression.Body.Type,
-                includePath.ThenIncludes);
+            object current = includableQuery!;
+            Type currentPropertyType = propertyType;
+
+            for (int i = 0; i < includePath.ThenIncludes.Count; i++)
+            {
+                LambdaExpression thenIncludeExpression = includePath.ThenIncludes[i];
+                bool isCollection = includePath.ThenIncludeIsCollection[i];
+                Type nextPropertyType = thenIncludeExpression.ReturnType;
+                MethodInfo genericThenIncludeMethod = ThenIncludeMethods[isCollection].MakeGenericMethod(entityType, currentPropertyType, nextPropertyType);
+                current = genericThenIncludeMethod.Invoke(null, [current, thenIncludeExpression])!;
+                currentPropertyType = nextPropertyType;
+            }
+
+            currentQuery = (IQueryable<TEntity>)current;
         }
 
         return currentQuery;
-    }
-
-    private static IQueryable<TEntity> ApplyThenIncludes<TEntity>(
-        IIncludableQueryable<TEntity, object> includable,
-        Type rootEntityType,
-        Type previousPropertyType,
-        List<LambdaExpression> thenIncludes)
-        where TEntity : class
-    {
-        MethodInfo thenIncludeMethod = GetThenIncludeMethod();
-        object current = includable;
-        Type currentPropType = previousPropertyType;
-
-        foreach (LambdaExpression thenInclude in thenIncludes)
-        {
-            Type nextPropertyType = thenInclude.Body.Type;
-
-            MethodInfo genericMethod = thenIncludeMethod.MakeGenericMethod(
-                rootEntityType,
-                currentPropType,
-                nextPropertyType);
-
-            current = genericMethod.Invoke(null, [current, thenInclude])!;
-            currentPropType = nextPropertyType;
-        }
-
-        return (IQueryable<TEntity>)current;
-    }
-
-    private static MethodInfo GetThenIncludeMethod()
-    {
-        return typeof(EntityFrameworkQueryableExtensions)
-            .GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Where(m => m.Name == nameof(EntityFrameworkQueryableExtensions.ThenInclude))
-            .Where(m => m.IsGenericMethodDefinition && m.GetGenericArguments().Length == 3)
-            .Where(m => m.GetParameters().Length == 2)
-            .First(m => m.GetParameters()[0].ParameterType.IsGenericType &&
-                        m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() ==
-                        typeof(IIncludableQueryable<,>));
     }
 }

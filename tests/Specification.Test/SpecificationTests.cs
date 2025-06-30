@@ -14,21 +14,21 @@ public class SpecificationTests
         public TestEntitySpecification() { }
 
         // Expose protected methods for testing
-        public void PublicAddWhere(Expression<Func<TestEntity, bool>> criteriaExpression) => AddWhere(criteriaExpression);
+        public void PublicAddWhere(Expression<Func<TestEntity, bool>> criteriaExpression) => Where(criteriaExpression);
 
-        public IncludePath<TestEntity> PublicAddInclude(Expression<Func<TestEntity, object>> includeExpression) =>
-            AddInclude(includeExpression);
+        public IncludeExpression<TestEntity> PublicAddInclude(Expression<Func<TestEntity, object>> includeExpression) =>
+            Include(includeExpression);
 
-        public void PublicApplyDistinct() => ApplyDistinct();
+        public void PublicApplyDistinct() => Distinct();
 
         public void PublicApplyDistinctBy<TKey>(Expression<Func<TestEntity, TKey>> keySelector) =>
-            ApplyDistinctBy(keySelector);
+            DistinctBy(keySelector);
 
         public void PublicAddOrderBy<TKey>(Expression<Func<TestEntity, TKey>> orderByExpression) =>
-            AddOrderBy(orderByExpression);
+            OrderBy(orderByExpression);
 
         public void PublicAddOrderByDescending<TKey>(Expression<Func<TestEntity, TKey>> orderByDescendingExpression) =>
-            AddOrderByDescending(orderByDescendingExpression);
+            OrderByDescending(orderByDescendingExpression);
 
         public void PublicAddThenBy<TKey>(Expression<Func<TestEntity, TKey>> thenByExpression) =>
             AddThenBy(thenByExpression);
@@ -49,10 +49,10 @@ public class SpecificationTests
         public TestEntityDtoSpecification() { }
 
         // Expose protected methods for testing
-        public void PublicApplySelect(Expression<Func<TestEntity, TestDto>> selector) => ApplySelect(selector);
+        public void PublicApplySelect(Expression<Func<TestEntity, TestDto>> selector) => Select(selector);
 
         public void PublicApplySelectMany(Expression<Func<TestEntity, IEnumerable<TestDto>>> selector) =>
-            ApplySelectMany(selector);
+            SelectMany(selector);
     }
     #endregion
 
@@ -80,7 +80,7 @@ public class SpecificationTests
         Expression<Func<TestEntity, object>> expression = e => e.Name;
 
         // Act
-        IncludePath<TestEntity> result = spec.PublicAddInclude(expression);
+        IncludeExpression<TestEntity> result = spec.PublicAddInclude(expression);
 
         // Assert
         Assert.Single(spec.IncludePaths);

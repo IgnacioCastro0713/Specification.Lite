@@ -13,6 +13,7 @@ public class TestDbContext : DbContext
     public DbSet<TestEntityWithRelation> TestEntityWithRelations { get; set; } = null!;
     public DbSet<TestRelatedEntity> TestRelatedEntities { get; set; } = null!;
     public DbSet<TestNestedEntity> TestNestedEntities { get; set; } = null!;
+    public DbSet<TestDeepEntity> TestDeepEntities { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,7 +25,9 @@ public class TestDbContext : DbContext
             .HasOne(e => e.Nested)
             .WithMany();
 
-
+        modelBuilder.Entity<TestNestedEntity>()
+            .HasMany(e => e.Deeps)
+            .WithMany();
 
         base.OnModelCreating(modelBuilder);
     }
@@ -61,6 +64,13 @@ public class TestRelatedEntity
 }
 
 public class TestNestedEntity
+{
+    public int Id { get; set; }
+    public string Value { get; set; } = string.Empty;
+    public List<TestDeepEntity> Deeps { get; set; } = [];
+}
+
+public class TestDeepEntity
 {
     public int Id { get; set; }
     public string Value { get; set; } = string.Empty;
