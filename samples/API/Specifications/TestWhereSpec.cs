@@ -8,6 +8,5 @@ public class TestWhereSpec : Specification<TestEntity>
     {
         AddWhere(entity => entity.Id == 4 || entity.Id == 1);
         AddWhere(entity => entity.Id == 4);
-        ApplyDistinctBy(entity => entity.Name);
     }
 }
