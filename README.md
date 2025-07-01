@@ -1,5 +1,7 @@
 # Specification.Lite
 
+[![GitHub](https://img.shields.io/github/license/IgnacioCastro0713/Specification.Lite?style=flat-square)](https://github.com/IgnacioCastro0713/Specification.Lite/blob/main/LICENSE)
+
 Specification.Lite is a lightweight library designed to simplify the implementation of the Specification pattern in .NET applications. It provides a flexible and reusable way to define and apply business rules, filtering, ordering, and projections to queries.
 
 ## Features
