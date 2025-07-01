@@ -8,7 +8,7 @@ namespace Specification.Lite;
 
 public abstract class Specification<TEntity> : ISpecification<TEntity>
 {
-    public List<Expression<Func<TEntity, bool>>> CriteriaExpressions { get; } = [];
+    public List<Expression<Func<TEntity, bool>>> WhereExpressions { get; } = [];
     public List<IncludeExpression<TEntity>> IncludeExpressions { get; } = [];
     public List<OrderExpression<TEntity>> OrderByExpressions { get; } = [];
     public int Take { get; protected set; } = -1;
@@ -19,11 +19,11 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     public bool IsDistinct { get; private set; }
     public Expression<Func<TEntity, object>>? DistinctBySelector { get; private set; }
 
-    protected void Where(Expression<Func<TEntity, bool>> criteriaExpression) => CriteriaExpressions.Add(criteriaExpression);
+    protected void Where(Expression<Func<TEntity, bool>> criteriaExpression) => WhereExpressions.Add(criteriaExpression);
 
     protected IncludeBuilder<TEntity, TProperty> Include<TProperty>(Expression<Func<TEntity, TProperty>> includeExpression)
     {
-        var includePath = new IncludeExpression<TEntity>(includeExpression, false);
+        var includePath = new IncludeExpression<TEntity>(includeExpression);
         IncludeExpressions.Add(includePath);
         return new IncludeBuilder<TEntity, TProperty>(includePath);
     }
@@ -31,7 +31,7 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     protected IncludeBuilder<TEntity, TProperty> Include<TProperty>(
         Expression<Func<TEntity, IEnumerable<TProperty>>> includeExpression)
     {
-        var includePath = new IncludeExpression<TEntity>(includeExpression, true);
+        var includePath = new IncludeExpression<TEntity>(includeExpression);
         IncludeExpressions.Add(includePath);
         return new IncludeBuilder<TEntity, TProperty>(includePath);
     }

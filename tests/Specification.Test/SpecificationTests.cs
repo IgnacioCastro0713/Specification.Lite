@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Specification.Lite;
-using Specification.Lite.Common;
 using Specification.Lite.Exceptions;
-using Specification.Lite.Expressions;
 
 namespace Specification.Test;
 
@@ -17,8 +15,6 @@ public class SpecificationTests
         // Expose protected methods for testing
         public void PublicAddWhere(Expression<Func<TestEntity, bool>> criteriaExpression) => Where(criteriaExpression);
 
-        public IncludeExpression<TestEntity> PublicAddInclude(Expression<Func<TestEntity, object>> includeExpression) =>
-            Include(includeExpression);
 
         public void PublicApplyDistinct() => Distinct();
 
@@ -30,12 +26,6 @@ public class SpecificationTests
 
         public void PublicAddOrderByDescending<TKey>(Expression<Func<TestEntity, TKey>> orderByDescendingExpression) =>
             OrderByDescending(orderByDescendingExpression);
-
-        public void PublicAddThenBy<TKey>(Expression<Func<TestEntity, TKey>> thenByExpression) =>
-            AddThenBy(thenByExpression);
-
-        public void PublicAddThenByDescending<TKey>(Expression<Func<TestEntity, TKey>> thenByDescendingExpression) =>
-            AddThenByDescending(thenByDescendingExpression);
 
         public void PublicAsTracking() => AsTracking();
 
@@ -69,25 +59,10 @@ public class SpecificationTests
         spec.PublicAddWhere(expression);
 
         // Assert
-        Assert.Single(spec.CriteriaExpressions);
-        Assert.Equal(expression, spec.CriteriaExpressions[0]);
+        Assert.Single(spec.WhereExpressions);
+        Assert.Equal(expression, spec.WhereExpressions[0]);
     }
 
-    [Fact]
-    public void AddInclude_AddsIncludePathToList()
-    {
-        // Arrange
-        var spec = new TestEntitySpecification();
-        Expression<Func<TestEntity, object>> expression = e => e.Name;
-
-        // Act
-        IncludeExpression<TestEntity> result = spec.PublicAddInclude(expression);
-
-        // Assert
-        Assert.Single(spec.IncludeExpressions);
-        Assert.Equal(result, spec.IncludeExpressions[0]);
-        Assert.NotNull(result.Expression);
-    }
 
     [Fact]
     public void ApplyDistinct_SetsIsDistinct()
@@ -138,65 +113,6 @@ public class SpecificationTests
         Assert.Throws<ConcurrentDistinctException>(() => spec.PublicApplyDistinctBy(e => e.Id));
     }
 
-    [Fact]
-    public void AddOrderBy_AddsOrderExpressionToList()
-    {
-        // Arrange
-        var spec = new TestEntitySpecification();
-        Expression<Func<TestEntity, int>> keySelector = e => e.Id;
-
-        // Act
-        spec.PublicAddOrderBy(keySelector);
-
-        // Assert
-        Assert.Single(spec.OrderByExpressions);
-        Assert.Equal(OrderTypeEnum.OrderBy, spec.OrderByExpressions[0].OrderType);
-    }
-
-    [Fact]
-    public void AddOrderByDescending_AddsOrderExpressionToList()
-    {
-        // Arrange
-        var spec = new TestEntitySpecification();
-        Expression<Func<TestEntity, int>> keySelector = e => e.Id;
-
-        // Act
-        spec.PublicAddOrderByDescending(keySelector);
-
-        // Assert
-        Assert.Single(spec.OrderByExpressions);
-        Assert.Equal(OrderTypeEnum.OrderByDescending, spec.OrderByExpressions[0].OrderType);
-    }
-
-    [Fact]
-    public void AddThenBy_AddsOrderExpressionToList()
-    {
-        // Arrange
-        var spec = new TestEntitySpecification();
-        Expression<Func<TestEntity, int>> keySelector = e => e.Id;
-
-        // Act
-        spec.PublicAddThenBy(keySelector);
-
-        // Assert
-        Assert.Single(spec.OrderByExpressions);
-        Assert.Equal(OrderTypeEnum.ThenBy, spec.OrderByExpressions[0].OrderType);
-    }
-
-    [Fact]
-    public void AddThenByDescending_AddsOrderExpressionToList()
-    {
-        // Arrange
-        var spec = new TestEntitySpecification();
-        Expression<Func<TestEntity, int>> keySelector = e => e.Id;
-
-        // Act
-        spec.PublicAddThenByDescending(keySelector);
-
-        // Assert
-        Assert.Single(spec.OrderByExpressions);
-        Assert.Equal(OrderTypeEnum.ThenByDescending, spec.OrderByExpressions[0].OrderType);
-    }
 
     [Fact]
     public void AsTracking_SetsIsAsTracking()

@@ -7,9 +7,7 @@ namespace Specification.Lite.Builders;
 public class OrderingBuilder<TEntity>
 {
     private readonly OrderExpression<TEntity> _orderExpression;
-
     internal OrderingBuilder(OrderExpression<TEntity> orderExpression) => _orderExpression = orderExpression;
-
 
     public OrderingBuilder<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> thenByExpression)
     {

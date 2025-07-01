@@ -109,12 +109,9 @@ public static class SpecificationIncludesEvaluator
         Type includableType = includableQueryable.GetType();
 
         Type iIncludableQueryableInterface = includableType.GetInterfaces()
-            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>))!;
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>))
+                                             ?? throw new InvalidOperationException($"Could not determine the previous property type for ThenInclude. Object type: {includableType.Name} does not implement IIncludableQueryable<,> or a derived type.");
 
-        if (iIncludableQueryableInterface == null)
-        {
-            throw new InvalidOperationException($"Could not determine the previous property type for ThenInclude. Object type: {includableType.Name} does not implement IIncludableQueryable<,> or a derived type.");
-        }
 
         return iIncludableQueryableInterface.GetGenericArguments()[1];
     }

@@ -7,7 +7,7 @@ public static class SpecificationEvaluator
         ISpecification<TEntity> specification) where TEntity : class
     {
         IQueryable<TEntity> baseQuery = query
-            .ApplyCriteria(specification)
+            .ApplyWhere(specification)
             .ApplyIncludes(specification)
             .ApplyOrderBy(specification)
             .ApplyDistinctness(specification)

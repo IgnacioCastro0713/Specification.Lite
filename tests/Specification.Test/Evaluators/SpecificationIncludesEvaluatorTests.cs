@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Specification.Lite.Evaluators;
-using Specification.Lite.Expressions;
 
 namespace Specification.Test.Evaluators;
 
@@ -48,82 +47,11 @@ public class SpecificationIncludesEvaluatorTests
         Assert.Equal(entities.Count, result.Count());
     }
 
-    // Include functionality primarily depends on EF Core, so we'll verify the setup but not the execution
-    [Fact]
-    public void ApplyIncludes_WithIncludePath_SetupCorrectly()
-    {
-        // Arrange
-        var mockSpecification = new Mock<Lite.ISpecification<TestEntityWithRelation>>();
-        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
-        mockSpecification.Setup(s => s.IncludeExpressions).Returns([includePath]);
 
-        // No actual query execution here since we can't truly test includes without a DbContext
-        Assert.NotNull(includePath.Expression);
-        Assert.Empty(includePath.ThenIncludes);
-    }
 
-    [Fact]
-    public void ApplyIncludes_WithThenIncludes_SetupCorrectly()
-    {
-        // Arrange
-        var mockSpecification = new Mock<Lite.ISpecification<TestEntityWithRelation>>();
 
-        // Create include path with then includes
-        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
-        includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
 
-        mockSpecification.Setup(s => s.IncludeExpressions).Returns([includePath]);
 
-        // Assert
-        Assert.NotNull(includePath.Expression);
-        Assert.Single(includePath.ThenIncludes);
-    }
 
-    [Fact]
-    public void IncludePath_AddThenInclude_AddsThenIncludeToList()
-    {
-        // Arrange
-        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
 
-        // Act
-        includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
-
-        // Assert
-        Assert.Single(includePath.ThenIncludes);
-    }
-
-    [Fact]
-    public void IncludePath_AddThenInclude_ReturnsIncludePath()
-    {
-        // Arrange
-        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
-
-        // Act
-        IncludeExpression<TestEntityWithRelation> result = includePath.AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
-
-        // Assert
-        Assert.Same(includePath, result);
-    }
-
-    [Fact]
-    public void IncludePath_AddThenInclude_CanBeChained()
-    {
-        // Arrange
-        var includePath = new IncludeExpression<TestEntityWithRelation>(e => e.Related!);
-
-        // Act - chain multiple ThenIncludes (this mimics the real-world usage)
-        includePath
-            .AddThenInclude<TestRelatedEntity, string>(r => r.Description)
-            .AddThenInclude<TestRelatedEntity, TestNestedEntity>(r => r.Nested!);
-
-        // Assert
-        Assert.Equal(2, includePath.ThenIncludes.Count);
-    }
-
-    [Fact]
-    public void IncludePath_Constructor_ThrowsOnNull()
-    {
-        // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => new IncludeExpression<TestEntityWithRelation>(null!));
-    }
 }

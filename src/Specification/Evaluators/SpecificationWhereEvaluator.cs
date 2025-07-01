@@ -3,20 +3,20 @@ using Specification.Lite.Expressions;
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationCriteriaEvaluator
+public static class SpecificationWhereEvaluator
 {
-    public static IQueryable<TEntity> ApplyCriteria<TEntity>(
+    public static IQueryable<TEntity> ApplyWhere<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        if (specification.CriteriaExpressions.Count == 0)
+        if (specification.WhereExpressions.Count == 0)
         {
             return query;
         }
 
         ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "entity");
         var visitor = new ParameterRebinder(parameter);
-        var bodies = specification.CriteriaExpressions
+        var bodies = specification.WhereExpressions
             .Select(expr => visitor.Visit(expr.Body))
             .ToList();
 

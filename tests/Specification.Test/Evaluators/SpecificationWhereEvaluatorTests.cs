@@ -4,14 +4,14 @@ using Specification.Lite.Evaluators;
 
 namespace Specification.Test.Evaluators;
 
-public class SpecificationCriteriaEvaluatorTests
+public class SpecificationWhereEvaluatorTests
 {
     [Fact]
     public void ApplyCriteria_WithNoExpressions_ReturnsOriginalQuery()
     {
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
-        mockSpecification.Setup(s => s.CriteriaExpressions).Returns([]);
+        mockSpecification.Setup(s => s.WhereExpressions).Returns([]);
 
         var entities = new List<TestEntity>
         {
@@ -21,7 +21,7 @@ public class SpecificationCriteriaEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        IQueryable<TestEntity> result = query.ApplyCriteria(mockSpecification.Object);
+        IQueryable<TestEntity> result = query.ApplyWhere(mockSpecification.Object);
 
         // Assert
         Assert.Equal(entities.Count, result.Count());
@@ -36,7 +36,7 @@ public class SpecificationCriteriaEvaluatorTests
         {
             e => e.Id > 1
         };
-        mockSpecification.Setup(s => s.CriteriaExpressions).Returns(criteriaExp);
+        mockSpecification.Setup(s => s.WhereExpressions).Returns(criteriaExp);
 
         var entities = new List<TestEntity>
         {
@@ -47,7 +47,7 @@ public class SpecificationCriteriaEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyCriteria(mockSpecification.Object).ToList();
+        var result = query.ApplyWhere(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -64,7 +64,7 @@ public class SpecificationCriteriaEvaluatorTests
             e => e.Id > 1,
             e => e.Name.Contains("t3")
         };
-        mockSpecification.Setup(s => s.CriteriaExpressions).Returns(criteriaExp);
+        mockSpecification.Setup(s => s.WhereExpressions).Returns(criteriaExp);
 
         var entities = new List<TestEntity>
         {
@@ -75,7 +75,7 @@ public class SpecificationCriteriaEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyCriteria(mockSpecification.Object).ToList();
+        var result = query.ApplyWhere(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Single(result);
