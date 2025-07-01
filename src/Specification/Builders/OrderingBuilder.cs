@@ -4,20 +4,17 @@ using Specification.Lite.Expressions;
 namespace Specification.Lite.Builders;
 
 
-public class OrderingBuilder<TEntity>
+public class OrderingBuilder<TEntity>(OrderExpression<TEntity> orderExpression)
 {
-    private readonly OrderExpression<TEntity> _orderExpression;
-    internal OrderingBuilder(OrderExpression<TEntity> orderExpression) => _orderExpression = orderExpression;
-
     public OrderingBuilder<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> thenByExpression)
     {
-        _orderExpression.ThenBy(thenByExpression);
-        return new OrderingBuilder<TEntity>(_orderExpression);
+        orderExpression.ThenBy(thenByExpression);
+        return new OrderingBuilder<TEntity>(orderExpression);
     }
 
     public OrderingBuilder<TEntity> ThenByDescending<TKey>(Expression<Func<TEntity, TKey>> thenByDescendingExpression)
     {
-        _orderExpression.ThenByDescending(thenByDescendingExpression);
-        return new OrderingBuilder<TEntity>(_orderExpression);
+        orderExpression.ThenByDescending(thenByDescendingExpression);
+        return new OrderingBuilder<TEntity>(orderExpression);
     }
 }

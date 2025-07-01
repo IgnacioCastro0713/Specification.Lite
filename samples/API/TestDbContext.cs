@@ -4,8 +4,15 @@ namespace API;
 
 public class TestDbContext : DbContext
 {
+    public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+    public TestDbContext() { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (optionsBuilder.IsConfigured)
+        {
+            return;
+        }
+
         optionsBuilder.UseInMemoryDatabase(databaseName: "TestDb");
     }
 

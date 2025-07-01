@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using API;
+using Moq;
 using Specification.Lite.Evaluators;
 
 namespace Specification.Test.Evaluators;
@@ -6,25 +7,6 @@ namespace Specification.Test.Evaluators;
 public class SpecificationIncludesEvaluatorTests
 {
     // These classes are just for testing the ThenInclude functionality
-    public class TestEntityWithRelation
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public TestRelatedEntity? Related { get; set; }
-    }
-
-    public class TestRelatedEntity
-    {
-        public int Id { get; set; }
-        public string Description { get; set; } = string.Empty;
-        public TestNestedEntity? Nested { get; set; }
-    }
-
-    public class TestNestedEntity
-    {
-        public int Id { get; set; }
-        public string Value { get; set; } = string.Empty;
-    }
 
     // Note: Testing includes fully would require an actual DbContext, so I'll use a simplified approach here
     [Fact]

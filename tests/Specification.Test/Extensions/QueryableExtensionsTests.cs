@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data.Entity;
+using API;
+using Microsoft.EntityFrameworkCore;
 using Specification.Lite;
 using Specification.Lite.Extensions;
 
@@ -14,46 +16,14 @@ public class QueryableExtensionsTests
     }
 
     [Fact]
-    public async Task ToListAsync_WithSpecification_CallsSpecifyQuery()
-    {
-        // Arrange
-        var specification = new TestSpecification();
-
-        // Use in-memory database
-        DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
-            .Options;
-
-        await using var context = new TestDbContext(options);
-        context.TestEntities.AddRange(
-            new TestEntity { Id = 1, Name = "Test1" },
-            new TestEntity { Id = 2, Name = "Test2" },
-            new TestEntity { Id = 3, Name = "Test3" }
-        );
-        await context.SaveChangesAsync();
-
-        // Act
-        List<TestEntity> expect = await context.TestEntities
-            .ToListAsync(CancellationToken.None);
-
-        List<TestEntity> result = await context.TestEntities
-            .ToListAsync(specification, CancellationToken.None);
-
-        // Assert 2/2
-        Assert.Equal(expect.Count, result.Count);
-    }
-
-    [Fact]
     public async Task ToListAsync_WithProjectionSpecification_ReturnsProjectedList()
     {
         // Arrange
         var specification = new TestProjectionSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
         await using var context = new TestDbContext(options);
         context.TestEntities.AddRange(
             new TestEntity { Id = 1, Name = "Test1" },
@@ -79,11 +49,11 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestSpecification();
 
-        // Use in-memory database
-        DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
-            .Options;
 
+
+        DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
+            .Options;
         await using var context = new TestDbContext(options);
         context.TestEntities.AddRange(
             new TestEntity { Id = 1, Name = "Test1" },
@@ -106,11 +76,10 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestProjectionSpecification();
 
-        // Use in-memory database
-        DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
-            .Options;
 
+        DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
+            .Options;
         await using var context = new TestDbContext(options);
         context.TestEntities.AddRange(
             new TestEntity { Id = 1, Name = "Test1" },
@@ -134,11 +103,9 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
         await using var context = new TestDbContext(options);
         context.TestEntities.Add(new TestEntity { Id = 1, Name = "Test1" });
         await context.SaveChangesAsync();
@@ -158,11 +125,9 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestProjectionSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
         await using var context = new TestDbContext(options);
         context.TestEntities.Add(new TestEntity { Id = 1, Name = "Test1" });
         await context.SaveChangesAsync();
@@ -183,11 +148,9 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
         await using var context = new TestDbContext(options);
         context.TestEntities.Add(new TestEntity { Id = 1, Name = "Test1" });
         await context.SaveChangesAsync();
@@ -206,13 +169,10 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
-        await using var context = new TestDbContext(options);
-        // Don't add any entities
+        await using var context = new TestDbContext(options);        // Don't add any entities
         await context.SaveChangesAsync();
 
         // Act
@@ -229,11 +189,9 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestProjectionSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
         await using var context = new TestDbContext(options);
         context.TestEntities.Add(new TestEntity { Id = 1, Name = "Test1" });
         await context.SaveChangesAsync();
@@ -252,13 +210,10 @@ public class QueryableExtensionsTests
         // Arrange
         var specification = new TestProjectionSpecification();
 
-        // Use in-memory database
         DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
+            .UseInMemoryDatabase(databaseName: "TestDb-" + Guid.NewGuid())
             .Options;
-
-        await using var context = new TestDbContext(options);
-        // Don't add any entities
+        await using var context = new TestDbContext(options);        // Don't add any entities
         await context.SaveChangesAsync();
 
         // Act

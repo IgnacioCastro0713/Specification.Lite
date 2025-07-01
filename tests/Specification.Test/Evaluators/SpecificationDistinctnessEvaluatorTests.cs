@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using API;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Specification.Lite;
@@ -47,12 +48,7 @@ public class SpecificationDistinctnessEvaluatorTests
         // Arrange
         var specification = new TestDistinctSpecification();
 
-        // Use in-memory database
-        DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(databaseName: $"ExtensionsTestDb_{Guid.NewGuid()}")
-            .Options;
-
-        await using var context = new TestDbContext(options);
+        await using var context = new TestDbContext();
         context.TestEntities.AddRange(
             new TestEntity { Id = 1, Name = "Test1" },
             new TestEntity { Id = 2, Name = "Test1" },

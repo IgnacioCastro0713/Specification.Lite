@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\samples\API\API.csproj" />
     <ProjectReference Include="..\..\src\Specification\Specification.csproj" />
   </ItemGroup>
 

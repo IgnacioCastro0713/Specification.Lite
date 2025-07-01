@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
+using API;
 using Moq;
 using Specification.Lite.Evaluators;
 using Specification.Lite.Exceptions;
-using static Specification.Test.Evaluators.SpecificationEvaluatorTests;
 
 namespace Specification.Test.Evaluators;
 

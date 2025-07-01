@@ -1,6 +1,6 @@
-﻿using Moq;
+﻿using API;
+using Moq;
 using Specification.Lite.Evaluators;
-using static Specification.Test.Evaluators.SpecificationEvaluatorTests;
 
 namespace Specification.Test.Evaluators;
 
