@@ -4,7 +4,7 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationSplitQueryEvaluator
 {
-    internal static IQueryable<TEntity> ApplySplitQuery<TEntity>(
+    internal static IQueryable<TEntity> SplitQuery<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

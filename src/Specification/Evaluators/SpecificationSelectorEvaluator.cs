@@ -4,21 +4,17 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationSelectorEvaluator
 {
-    internal static IQueryable<TResult> ApplySelectors<TEntity, TResult>(
+    internal static IQueryable<TResult> Selectors<TEntity, TResult>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity, TResult> specification) where TEntity : class
     {
-
-        if (specification.Selector is not null)
+        if (specification.Selector is null && specification.ManySelector is null)
         {
-            return query.Select(specification.Selector);
+            throw new SelectorNotFoundException();
         }
 
-        if (specification.SelectManySelector is not null)
-        {
-            return query.SelectMany(specification.SelectManySelector);
-        }
-
-        throw new DuplicateSelectorsException();
+        return specification.Selector is not null
+            ? query.Select(specification.Selector)
+            : query.SelectMany(specification.ManySelector!);
     }
 }

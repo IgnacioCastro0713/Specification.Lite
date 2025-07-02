@@ -6,7 +6,7 @@ using Specification.Lite.Expressions;
 
 namespace Specification.Test.Evaluators;
 
-public class SpecificationOrderByEvaluatorTests
+public class SpecificationOrderEvaluatorTests
 {
     [Fact]
     public void ApplyOrderBy_WithNoOrderExpressions_ReturnsOriginalQuery()
@@ -23,7 +23,7 @@ public class SpecificationOrderByEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        IQueryable<TestEntity> result = query.ApplyOrderBy(mockSpecification.Object);
+        IQueryable<TestEntity> result = query.Order(mockSpecification.Object);
 
         // Assert
         Assert.Equal(entities.Count, result.Count());
@@ -51,7 +51,7 @@ public class SpecificationOrderByEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyOrderBy(mockSpecification.Object).ToList();
+        var result = query.Order(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(1, result[0].Id);
@@ -79,7 +79,7 @@ public class SpecificationOrderByEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyOrderBy(mockSpecification.Object).ToList();
+        var result = query.Order(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(3, result[0].Id);

@@ -23,7 +23,7 @@ public class SpecificationPagingEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyPaging(mockSpecification.Object).ToList();
+        var result = query.Paging(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(entities.Count, result.Count);
@@ -46,7 +46,7 @@ public class SpecificationPagingEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyPaging(mockSpecification.Object).ToList();
+        var result = query.Paging(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -71,7 +71,7 @@ public class SpecificationPagingEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyPaging(mockSpecification.Object).ToList();
+        var result = query.Paging(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -96,7 +96,7 @@ public class SpecificationPagingEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyPaging(mockSpecification.Object).ToList();
+        var result = query.Paging(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Single(result);

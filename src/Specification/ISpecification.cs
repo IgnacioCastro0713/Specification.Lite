@@ -18,5 +18,5 @@ public interface ISpecification<TEntity>
 public interface ISpecification<TEntity, TResult> : ISpecification<TEntity>
 {
     Expression<Func<TEntity, TResult>>? Selector { get; }
-    Expression<Func<TEntity, IEnumerable<TResult>>>? SelectManySelector { get; }
+    Expression<Func<TEntity, IEnumerable<TResult>>>? ManySelector { get; }
 }

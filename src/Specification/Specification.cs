@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Specification.Lite.Builders;
-using Specification.Lite.Exceptions;
 using Specification.Lite.Expressions;
 
 namespace Specification.Lite;
@@ -22,27 +21,6 @@ public abstract class Specification<TEntity, TResult> : Specification<TEntity>, 
     where TEntity : class
 {
     public new ISpecificationBuilder<TEntity, TResult> Query => new SpecificationBuilder<TEntity, TResult>(this);
-
-    public Expression<Func<TEntity, TResult>>? Selector { get; protected set; }
-    public Expression<Func<TEntity, IEnumerable<TResult>>>? SelectManySelector { get; protected set; }
-
-    protected void Select(Expression<Func<TEntity, TResult>> selector)
-    {
-        if (SelectManySelector is not null)
-        {
-            throw new ConcurrentSelectorsException();
-        }
-
-        Selector = selector;
-    }
-
-    protected void SelectMany(Expression<Func<TEntity, IEnumerable<TResult>>> selector)
-    {
-        if (Selector is not null)
-        {
-            throw new ConcurrentSelectorsException();
-        }
-
-        SelectManySelector = selector;
-    }
+    public Expression<Func<TEntity, TResult>>? Selector { get; internal set; }
+    public Expression<Func<TEntity, IEnumerable<TResult>>>? ManySelector { get; internal set; }
 }

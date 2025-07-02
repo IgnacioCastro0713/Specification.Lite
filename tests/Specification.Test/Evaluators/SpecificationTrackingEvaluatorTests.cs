@@ -25,7 +25,7 @@ public class SpecificationTrackingEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        IQueryable<TestEntity> result = query.ApplyTracking(mockSpecification.Object);
+        IQueryable<TestEntity> result = query.Tracking(mockSpecification.Object);
 
         // Assert
         Assert.Equal(entities.Count, result.Count());

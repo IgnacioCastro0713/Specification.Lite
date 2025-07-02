@@ -22,7 +22,7 @@ public class SpecificationWhereEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        IQueryable<TestEntity> result = query.ApplyWhere(mockSpecification.Object);
+        IQueryable<TestEntity> result = query.Where(mockSpecification.Object);
 
         // Assert
         Assert.Equal(entities.Count, result.Count());
@@ -48,7 +48,7 @@ public class SpecificationWhereEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyWhere(mockSpecification.Object).ToList();
+        var result = query.Where(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -76,7 +76,7 @@ public class SpecificationWhereEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplyWhere(mockSpecification.Object).ToList();
+        var result = query.Where(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Single(result);

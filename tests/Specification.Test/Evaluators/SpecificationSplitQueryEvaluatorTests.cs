@@ -22,7 +22,7 @@ public class SpecificationSplitQueryEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        IQueryable<TestEntity> result = query.ApplySplitQuery(mockSpecification.Object);
+        IQueryable<TestEntity> result = query.SplitQuery(mockSpecification.Object);
 
         // Assert
         Assert.Equal(entities.Count, result.Count());

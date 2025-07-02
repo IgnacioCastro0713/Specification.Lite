@@ -3,9 +3,9 @@ using Specification.Lite.Expressions;
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationOrderByEvaluator
+public static class SpecificationOrderEvaluator
 {
-    internal static IQueryable<TEntity> ApplyOrderBy<TEntity>(
+    internal static IQueryable<TEntity> Order<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

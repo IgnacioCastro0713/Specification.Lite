@@ -2,7 +2,7 @@
 
 public static class SpecificationWhereEvaluator
 {
-    internal static IQueryable<TEntity> ApplyWhere<TEntity>(
+    internal static IQueryable<TEntity> Where<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

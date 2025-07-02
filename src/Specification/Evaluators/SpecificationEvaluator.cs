@@ -8,15 +8,13 @@ public static class SpecificationEvaluator
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        IQueryable<TEntity> baseQuery = query
-            .ApplyWhere(specification)
-            .ApplyIncludes(specification)
-            .ApplyOrderBy(specification)
-            .ApplyPaging(specification)
-            .ApplyTracking(specification)
-            .ApplySplitQuery(specification);
-
-        return baseQuery;
+        return query
+            .Where(specification)
+            .Include(specification)
+            .Order(specification)
+            .Paging(specification)
+            .Tracking(specification)
+            .SplitQuery(specification);
     }
 
     public static IQueryable<TResult> WithSpecification<TEntity, TResult>(
@@ -24,8 +22,8 @@ public static class SpecificationEvaluator
         ISpecification<TEntity, TResult> specification)
         where TEntity : class
     {
-        IQueryable<TEntity> baseQuery = query.WithSpecification<TEntity>(specification);
-
-        return baseQuery.ApplySelectors(specification);
+        return query
+            .WithSpecification<TEntity>(specification)
+            .Selectors(specification);
     }
 }

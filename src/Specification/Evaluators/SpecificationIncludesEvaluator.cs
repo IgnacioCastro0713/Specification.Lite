@@ -29,7 +29,7 @@ public static class SpecificationIncludesEvaluator
                                       && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>)
                                       && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
 
-    internal static IQueryable<TEntity> ApplyIncludes<TEntity>(this IQueryable<TEntity> query, ISpecification<TEntity> specification) where TEntity : class
+    internal static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> query, ISpecification<TEntity> specification) where TEntity : class
     {
         return specification.IncludeExpressions.Aggregate(query, (current, includeExpression) => includeExpression.Type switch
         {

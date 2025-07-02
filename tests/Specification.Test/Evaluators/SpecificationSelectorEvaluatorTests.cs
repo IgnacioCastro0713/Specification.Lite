@@ -15,7 +15,7 @@ public class SpecificationSelectorEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity, TestDto>>();
         Expression<Func<TestEntity, TestDto>> selector = entity => new TestDto { Id = entity.Id, Name = entity.Name };
         mockSpecification.Setup(s => s.Selector).Returns(selector);
-        mockSpecification.Setup(s => s.SelectManySelector).Returns((Expression<Func<TestEntity, IEnumerable<TestDto>>>?)null);
+        mockSpecification.Setup(s => s.ManySelector).Returns((Expression<Func<TestEntity, IEnumerable<TestDto>>>?)null);
 
         var entities = new List<TestEntity>
         {
@@ -25,7 +25,7 @@ public class SpecificationSelectorEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplySelectors(mockSpecification.Object).ToList();
+        var result = query.Selectors(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(entities.Count, result.Count);
@@ -43,7 +43,7 @@ public class SpecificationSelectorEvaluatorTests
         mockSpecification.Setup(s => s.Selector).Returns((Expression<Func<TestEntity, string>>?)null);
         Expression<Func<TestEntity, IEnumerable<string>>> selectManySelector = entity => entity.Name.Split(new[] { ',' })
             .Select(n => n.Trim());
-        mockSpecification.Setup(s => s.SelectManySelector).Returns(selectManySelector);
+        mockSpecification.Setup(s => s.ManySelector).Returns(selectManySelector);
 
         var entities = new List<TestEntity>
         {
@@ -52,7 +52,7 @@ public class SpecificationSelectorEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act
-        var result = query.ApplySelectors(mockSpecification.Object).ToList();
+        var result = query.Selectors(mockSpecification.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count); // Because we split one entity into two strings
@@ -66,7 +66,7 @@ public class SpecificationSelectorEvaluatorTests
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity, TestDto>>();
         mockSpecification.Setup(s => s.Selector).Returns((Expression<Func<TestEntity, TestDto>>?)null);
-        mockSpecification.Setup(s => s.SelectManySelector).Returns((Expression<Func<TestEntity, IEnumerable<TestDto>>>?)null);
+        mockSpecification.Setup(s => s.ManySelector).Returns((Expression<Func<TestEntity, IEnumerable<TestDto>>>?)null);
 
         var entities = new List<TestEntity>
         {
@@ -75,6 +75,6 @@ public class SpecificationSelectorEvaluatorTests
         IQueryable<TestEntity> query = entities.AsQueryable();
 
         // Act & Assert
-        Assert.Throws<DuplicateSelectorsException>(() => query.ApplySelectors(mockSpecification.Object));
+        Assert.Throws<DuplicateSelectorsException>(() => query.Selectors(mockSpecification.Object));
     }
 }

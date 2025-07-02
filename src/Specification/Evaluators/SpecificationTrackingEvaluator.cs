@@ -4,7 +4,7 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationTrackingEvaluator
 {
-    internal static IQueryable<TEntity> ApplyTracking<TEntity>(
+    internal static IQueryable<TEntity> Tracking<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
