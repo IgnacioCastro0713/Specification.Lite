@@ -5,11 +5,11 @@ namespace Specification.Lite.Expressions;
 
 public class OrderExpression<TEntity>(
     Expression<Func<TEntity, object>> expression,
-    OrderTypeEnum orderType)
+    OrderType orderType)
 {
     internal Expression<Func<TEntity, object>> Expression { get; } = expression;
-    internal OrderTypeEnum OrderType { get; } = orderType;
-    internal List<(Expression<Func<TEntity, object>> expression, OrderTypeEnum orderType)> ThenOrders { get; } = [];
+    internal OrderType OrderType { get; } = orderType;
+    internal List<(Expression<Func<TEntity, object>> expression, OrderType orderType)> ThenOrders { get; } = [];
 
 
     public OrderExpression<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> thenByExpression)
@@ -17,7 +17,7 @@ public class OrderExpression<TEntity>(
         var convertedSelector = System.Linq.Expressions.Expression.Lambda<Func<TEntity, object>>(
             System.Linq.Expressions.Expression.Convert(thenByExpression.Body, typeof(object)),
             thenByExpression.Parameters);
-        ThenOrders.Add((convertedSelector, OrderTypeEnum.ThenBy));
+        ThenOrders.Add((convertedSelector, OrderType.ThenBy));
         return this;
     }
 
@@ -26,7 +26,7 @@ public class OrderExpression<TEntity>(
         var convertedSelector = System.Linq.Expressions.Expression.Lambda<Func<TEntity, object>>(
             System.Linq.Expressions.Expression.Convert(thenByDescendingExpression.Body, typeof(object)),
             thenByDescendingExpression.Parameters);
-        ThenOrders.Add((convertedSelector, OrderTypeEnum.ThenByDescending));
+        ThenOrders.Add((convertedSelector, OrderType.ThenByDescending));
         return this;
     }
 }

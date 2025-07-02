@@ -2,7 +2,7 @@
 
 public static class SpecificationEvaluator
 {
-    public static IQueryable<TEntity> SpecificationQuery<TEntity>(
+    public static IQueryable<TEntity> WithSpecification<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
@@ -10,21 +10,19 @@ public static class SpecificationEvaluator
             .ApplyWhere(specification)
             .ApplyIncludes(specification)
             .ApplyOrderBy(specification)
-            .ApplyDistinctness(specification)
             .ApplyPaging(specification)
             .ApplyTracking(specification)
             .ApplySplitQuery(specification);
 
-
         return baseQuery;
     }
 
-    public static IQueryable<TResult> SpecificationQuery<TEntity, TResult>(
+    public static IQueryable<TResult> WithSpecification<TEntity, TResult>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity, TResult> specification)
         where TEntity : class
     {
-        IQueryable<TEntity> baseQuery = query.SpecificationQuery<TEntity>(specification);
+        IQueryable<TEntity> baseQuery = query.WithSpecification<TEntity>(specification);
 
         return baseQuery.ApplySelectors(specification);
     }

@@ -39,7 +39,7 @@ public class SpecificationOrderByEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
         var orderExpressions = new List<OrderExpression<TestEntity>>
         {
-            new(e => e.Id, OrderTypeEnum.OrderBy)
+            new(e => e.Id, OrderType.OrderBy)
         };
         mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
 
@@ -67,7 +67,7 @@ public class SpecificationOrderByEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
         var orderExpressions = new List<OrderExpression<TestEntity>>
         {
-            new(e => e.Id, OrderTypeEnum.OrderByDescending)
+            new(e => e.Id, OrderType.OrderByDescending)
         };
         mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
 
@@ -95,8 +95,8 @@ public class SpecificationOrderByEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
         var orderExpressions = new List<OrderExpression<TestEntity>>
         {
-            new(e => e.Id, OrderTypeEnum.OrderBy),
-            new(e => e.Name, OrderTypeEnum.OrderBy) // This should cause an exception
+            new(e => e.Id, OrderType.OrderBy),
+            new(e => e.Name, OrderType.OrderBy) // This should cause an exception
         };
         mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
 

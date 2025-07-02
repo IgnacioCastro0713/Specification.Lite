@@ -1,21 +1,16 @@
-﻿using System.Linq.Expressions;
-using Specification.Lite.Expressions;
+﻿namespace Specification.Lite.Builders;
 
-namespace Specification.Lite.Builders;
+public interface IIncludeBuilder<TEntity, TResult, out TProperty>
+    : ISpecificationBuilder<TEntity, TResult>, IIncludeBuilder<TEntity, TProperty>
+    where TEntity : class;
 
-public class IncludeBuilder<TEntity, TProperty>(IncludeExpression<TEntity> includeExpression)
-{
-    public IncludeBuilder<TEntity, TNavigation> ThenInclude<TNavigation>(
-        Expression<Func<TProperty, TNavigation>> thenIncludeExpression)
-    {
-        includeExpression.ThenInclude(thenIncludeExpression);
-        return new IncludeBuilder<TEntity, TNavigation>(includeExpression);
-    }
+public interface IIncludeBuilder<TEntity, out TProperty>
+    : ISpecificationBuilder<TEntity> where TEntity : class;
 
-    public IncludeBuilder<TEntity, TElement> ThenInclude<TElement>(
-        Expression<Func<TProperty, IEnumerable<TElement>>> thenIncludeExpression)
-    {
-        includeExpression.ThenInclude(thenIncludeExpression);
-        return new IncludeBuilder<TEntity, TElement>(includeExpression);
-    }
-}
+public class IncludeBuilder<TEntity, TResult, TProperty>(Specification<TEntity, TResult> specification)
+    : SpecificationBuilder<TEntity, TResult>(specification), IIncludeBuilder<TEntity, TResult, TProperty>
+    where TEntity : class;
+
+public class IncludeBuilder<TEntity, TProperty>(Specification<TEntity> specification)
+    : SpecificationBuilder<TEntity>(specification), IIncludeBuilder<TEntity, TProperty>
+    where TEntity : class;

@@ -18,7 +18,7 @@ public class SpecificationEvaluatorTests
         IQueryable<TestEntity> query = new List<TestEntity>().AsQueryable();
 
         // Act
-        IQueryable<TestEntity> result = query.SpecificationQuery(mockSpecification.Object);
+        IQueryable<TestEntity> result = query.WithSpecification(mockSpecification.Object);
 
         // Assert
         Assert.NotNull(result);
@@ -38,7 +38,7 @@ public class SpecificationEvaluatorTests
         IQueryable<TestEntity> query = new List<TestEntity> { new() { Id = 1, Name = "Test" } }.AsQueryable();
 
         // Act
-        IQueryable<TestDto> result = query.SpecificationQuery(mockSpecification.Object);
+        IQueryable<TestDto> result = query.WithSpecification(mockSpecification.Object);
 
         // Assert
         Assert.NotNull(result);

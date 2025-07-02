@@ -21,27 +21,27 @@ public static class SpecificationOrderByEvaluator
                 throw new DuplicateOrderChainException();
             }
 
-            if (orderExpression.OrderType == OrderTypeEnum.OrderBy)
+            if (orderExpression.OrderType == OrderType.OrderBy)
             {
                 orderedQuery = query.OrderBy(orderExpression.Expression);
                 countPrimaryOrder++;
             }
 
-            if (orderExpression.OrderType == OrderTypeEnum.OrderByDescending)
+            if (orderExpression.OrderType == OrderType.OrderByDescending)
             {
                 orderedQuery = query.OrderByDescending(orderExpression.Expression);
                 countPrimaryOrder++;
             }
 
 
-            foreach ((Expression<Func<TEntity, object>> thenExpression, OrderTypeEnum thenOrderType) in orderExpression.ThenOrders)
+            foreach ((Expression<Func<TEntity, object>> thenExpression, OrderType thenOrderType) in orderExpression.ThenOrders)
             {
-                if (thenOrderType == OrderTypeEnum.ThenBy)
+                if (thenOrderType == OrderType.ThenBy)
                 {
                     orderedQuery = orderedQuery!.ThenBy(thenExpression);
                 }
 
-                if (thenOrderType == OrderTypeEnum.ThenByDescending)
+                if (thenOrderType == OrderType.ThenByDescending)
                 {
                     orderedQuery = orderedQuery!.ThenByDescending(thenExpression);
                 }

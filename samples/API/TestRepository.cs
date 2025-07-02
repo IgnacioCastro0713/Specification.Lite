@@ -1,6 +1,6 @@
 ﻿using API.Specifications;
 using Microsoft.EntityFrameworkCore;
-using Specification.Lite.Extensions;
+using Specification.Lite.Evaluators;
 
 namespace API;
 
@@ -84,15 +84,23 @@ public class TestRepository : ITestRepository
         return list;
     }
 
+
     public async Task<List<TestEntityWithRelation>> GetWithInclude()
     {
         await using var context = new TestDbContext();
-
+        //List<TestEntityWithRelation> list = await context.TestEntityWithRelations
+        //    .Include(e => e.Related)
+        //    .ThenInclude(e => e!.Nested)
+        //    .ThenInclude(e => e!.Deeps)
+        //    .ThenInclude(e => e.MoreDeep)
+        //    .ToListAsync();
         var spec = new TestIncludeSpec();
         List<TestEntityWithRelation> list = await context.TestEntityWithRelations
-            .ToListAsync(spec);
+            .WithSpecification(spec)
+            .ToListAsync();
         return list;
     }
+
 
     public async Task<List<TestRelatedEntity>> GetWithOrder()
     {
@@ -100,7 +108,8 @@ public class TestRepository : ITestRepository
 
         var spec = new TestOrderSpec();
         List<TestRelatedEntity> list = await context.TestRelatedEntities
-            .ToListAsync(spec);
+            .WithSpecification(spec)
+            .ToListAsync();
         return list;
     }
 }

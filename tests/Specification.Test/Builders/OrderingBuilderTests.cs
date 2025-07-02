@@ -12,7 +12,7 @@ public class OrderingBuilderTests
     public void ThenBy_AddsThenByExpression()
     {
         // Arrange
-        var orderExpression = new OrderExpression<TestEntity>(e => e.Id, OrderTypeEnum.OrderBy);
+        var orderExpression = new OrderExpression<TestEntity>(e => e.Id, OrderType.OrderBy);
         var builder = new OrderingBuilder<TestEntity>(orderExpression);
 
         Expression<Func<TestEntity, object>> thenByExpression = e => e.Name;
@@ -29,7 +29,7 @@ public class OrderingBuilderTests
     public void ThenByDescending_AddsThenByDescendingExpression()
     {
         // Arrange
-        var orderExpression = new OrderExpression<TestEntity>(e => e.Id, OrderTypeEnum.OrderBy);
+        var orderExpression = new OrderExpression<TestEntity>(e => e.Id, OrderType.OrderBy);
         var builder = new OrderingBuilder<TestEntity>(orderExpression);
         Expression<Func<TestEntity, object>> thenByDescendingExpression = e => e.Name;
 

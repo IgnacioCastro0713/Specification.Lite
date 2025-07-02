@@ -6,15 +6,13 @@ namespace Specification.Lite;
 public interface ISpecification<TEntity>
 {
     List<Expression<Func<TEntity, bool>>> WhereExpressions { get; }
-    List<IncludeExpression<TEntity>> IncludeExpressions { get; }
+    List<IncludeExpression> IncludeExpressions { get; }
     List<OrderExpression<TEntity>> OrderByExpressions { get; }
     int Take { get; }
     int Skip { get; }
-    public bool IsAsTracking { get; }
-    public bool IsAsNoTracking { get; }
-    public bool IsAsSplitQuery { get; }
-    bool IsDistinct { get; }
-    Expression<Func<TEntity, object>>? DistinctBySelector { get; }
+    bool IsAsTracking { get; }
+    bool IsAsNoTracking { get; }
+    bool IsAsSplitQuery { get; }
 }
 
 public interface ISpecification<TEntity, TResult> : ISpecification<TEntity>

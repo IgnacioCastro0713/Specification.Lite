@@ -1,16 +1,25 @@
 ﻿using System.Linq.Expressions;
+using Specification.Lite.Common;
 
 namespace Specification.Lite.Expressions;
 
-public class IncludeExpression<TEntity>(LambdaExpression expression)
+public class IncludeExpression
 {
-    public LambdaExpression Expression { get; } = expression ?? throw new ArgumentNullException(nameof(expression));
+    public LambdaExpression LambdaExpression { get; }
+    public Type? PreviousPropertyType { get; set; }
+    public IncludeType Type { get; }
 
-    public List<LambdaExpression> ThenIncludes { get; } = [];
-
-    public IncludeExpression<TEntity> ThenInclude(LambdaExpression expression)
+    public IncludeExpression(LambdaExpression expression)
     {
-        ThenIncludes.Add(expression);
-        return this;
+        LambdaExpression = expression ?? throw new ArgumentNullException(nameof(expression));
+        PreviousPropertyType = null;
+        Type = IncludeType.Include;
+    }
+
+    public IncludeExpression(LambdaExpression expression, Type propertyType)
+    {
+        LambdaExpression = expression ?? throw new ArgumentNullException(nameof(expression));
+        PreviousPropertyType = propertyType ?? throw new ArgumentNullException(nameof(propertyType));
+        Type = IncludeType.ThenInclude;
     }
 }
