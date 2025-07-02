@@ -2,7 +2,7 @@
 
 public static class SpecificationPagingEvaluator
 {
-    public static IQueryable<TEntity> ApplyPaging<TEntity>(
+    internal static IQueryable<TEntity> ApplyPaging<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

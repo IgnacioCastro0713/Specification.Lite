@@ -7,7 +7,7 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationOrderByEvaluator
 {
-    public static IQueryable<TEntity> ApplyOrderBy<TEntity>(
+    internal static IQueryable<TEntity> ApplyOrderBy<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

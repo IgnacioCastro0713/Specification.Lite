@@ -1,4 +1,6 @@
-﻿namespace Specification.Lite.Evaluators;
+﻿using Specification.Lite.Evaluators;
+
+namespace Specification.Lite;
 
 public static class SpecificationEvaluator
 {

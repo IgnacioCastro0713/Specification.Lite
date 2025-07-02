@@ -5,7 +5,7 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationWhereEvaluator
 {
-    public static IQueryable<TEntity> ApplyWhere<TEntity>(
+    internal static IQueryable<TEntity> ApplyWhere<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

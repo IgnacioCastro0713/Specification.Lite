@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Specification.Lite.Evaluators;
 
-namespace Specification.Lite.Extensions;
+namespace Specification.Lite;
 
 public static class QueryableExtensions
 {

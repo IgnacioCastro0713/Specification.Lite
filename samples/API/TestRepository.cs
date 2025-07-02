@@ -1,6 +1,6 @@
 ﻿using API.Specifications;
 using Microsoft.EntityFrameworkCore;
-using Specification.Lite.Evaluators;
+using Specification.Lite;
 
 namespace API;
 
@@ -79,7 +79,8 @@ public class TestRepository : ITestRepository
 
         var spec = new TestWhereSpec();
         List<TestEntity> list = await context.TestEntities
-            .ToListAsync(spec);
+            .WithSpecification(spec)
+            .ToListAsync();
 
         return list;
     }

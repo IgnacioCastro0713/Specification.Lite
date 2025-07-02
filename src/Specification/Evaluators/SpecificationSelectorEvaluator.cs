@@ -4,7 +4,7 @@ namespace Specification.Lite.Evaluators;
 
 public static class SpecificationSelectorEvaluator
 {
-    public static IQueryable<TResult> ApplySelectors<TEntity, TResult>(
+    internal static IQueryable<TResult> ApplySelectors<TEntity, TResult>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity, TResult> specification) where TEntity : class
     {
