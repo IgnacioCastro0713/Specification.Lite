@@ -50,8 +50,9 @@ public static class SpecificationIncludesEvaluator
             Expression.Convert(lambdaParameter, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(typeof(TEntity), includeExpression.LambdaExpression.ReturnType))));
 
         var lambda = Expression.Lambda<Func<IQueryable, LambdaExpression, IQueryable>>(call, queryableParameter, lambdaParameter);
+        Func<IQueryable, LambdaExpression, IQueryable> compiledLambda = lambda.Compile();
+        query = (IQueryable<TEntity>)compiledLambda(query, includeExpression.LambdaExpression);
 
-        query = (IQueryable<TEntity>)lambda.Compile()(query, includeExpression.LambdaExpression);
         return query;
     }
 
@@ -70,8 +71,9 @@ public static class SpecificationIncludesEvaluator
             Expression.Convert(lambdaParameter, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(previousPropertyType, includeExpression.LambdaExpression.ReturnType))));
 
         var lambda = Expression.Lambda<Func<IQueryable, LambdaExpression, IQueryable>>(call, queryableParameter, lambdaParameter);
+        Func<IQueryable, LambdaExpression, IQueryable> compiledLambda = lambda.Compile();
+        query = (IQueryable<TEntity>)compiledLambda(query, includeExpression.LambdaExpression);
 
-        query = (IQueryable<TEntity>)lambda.Compile()(query, includeExpression.LambdaExpression);
         return query;
     }
 
