@@ -107,6 +107,15 @@ public class TestRepository : ITestRepository
     {
         await using var context = new TestDbContext();
 
+
+        //List<TestRelatedEntity> list = await context.TestRelatedEntities
+        //    .Where(entity => entity.Id < 4)
+        //    .OrderByDescending(entity => entity.Department)
+        //    .ThenByDescending(entity => entity.Salary)
+        //    .Skip(1)
+        //    .Take(1)
+        //    .ToListAsync();
+
         var spec = new TestOrderSpec();
         List<TestRelatedEntity> list = await context.TestRelatedEntities
             .WithSpecification(spec)

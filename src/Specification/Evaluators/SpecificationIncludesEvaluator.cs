@@ -15,16 +15,14 @@ public static class SpecificationIncludesEvaluator
                                   && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IQueryable<>)
                                   && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
 
-    private static readonly MethodInfo ThenIncludeAfterReferenceMethodInfo
-        = typeof(EntityFrameworkQueryableExtensions)
+    private static readonly MethodInfo ThenIncludeAfterReferenceMethodInfo = typeof(EntityFrameworkQueryableExtensions)
             .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.ThenInclude))
             .Single(methodInfo => methodInfo.IsPublic && methodInfo.GetGenericArguments().Length == 3
                                       && methodInfo.GetParameters()[0].ParameterType.GenericTypeArguments[1].IsGenericParameter
                                       && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>)
                                       && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
 
-    private static readonly MethodInfo ThenIncludeAfterEnumerableMethodInfo
-        = typeof(EntityFrameworkQueryableExtensions)
+    private static readonly MethodInfo ThenIncludeAfterEnumerableMethodInfo = typeof(EntityFrameworkQueryableExtensions)
             .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.ThenInclude))
             .Single(methodInfo => methodInfo.IsPublic && methodInfo.GetGenericArguments().Length == 3
                                       && !methodInfo.GetParameters()[0].ParameterType.GenericTypeArguments[1].IsGenericParameter

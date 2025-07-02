@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using Specification.Lite.Common;
-using Specification.Lite.Exceptions;
+﻿using Specification.Lite.Common;
 using Specification.Lite.Expressions;
 
 namespace Specification.Lite.Evaluators;
@@ -11,43 +9,22 @@ public static class SpecificationOrderByEvaluator
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        IOrderedQueryable<TEntity>? orderedQuery = null;
-        int countPrimaryOrder = 0;
+        IOrderedQueryable<TEntity>? orderedQuery = specification
+            .OrderExpressions
+            .Aggregate<OrderExpression<TEntity>, IOrderedQueryable<TEntity>?>(null, (current, item) => item.OrderType switch
+                {
+                    OrderType.OrderBy => query.OrderBy(item.KeySelector),
+                    OrderType.OrderByDescending => query.OrderByDescending(item.KeySelector),
+                    OrderType.ThenBy => current!.ThenBy(item.KeySelector),
+                    OrderType.ThenByDescending => current!.ThenByDescending(item.KeySelector),
+                    _ => current
+                });
 
-        foreach (OrderExpression<TEntity> orderExpression in specification.OrderByExpressions)
+        if (orderedQuery is not null)
         {
-            if (countPrimaryOrder == 1)
-            {
-                throw new DuplicateOrderChainException();
-            }
-
-            if (orderExpression.OrderType == OrderType.OrderBy)
-            {
-                orderedQuery = query.OrderBy(orderExpression.Expression);
-                countPrimaryOrder++;
-            }
-
-            if (orderExpression.OrderType == OrderType.OrderByDescending)
-            {
-                orderedQuery = query.OrderByDescending(orderExpression.Expression);
-                countPrimaryOrder++;
-            }
-
-
-            foreach ((Expression<Func<TEntity, object>> thenExpression, OrderType thenOrderType) in orderExpression.ThenOrders)
-            {
-                if (thenOrderType == OrderType.ThenBy)
-                {
-                    orderedQuery = orderedQuery!.ThenBy(thenExpression);
-                }
-
-                if (thenOrderType == OrderType.ThenByDescending)
-                {
-                    orderedQuery = orderedQuery!.ThenByDescending(thenExpression);
-                }
-            }
+            query = orderedQuery;
         }
 
-        return orderedQuery ?? query;
+        return query;
     }
 }

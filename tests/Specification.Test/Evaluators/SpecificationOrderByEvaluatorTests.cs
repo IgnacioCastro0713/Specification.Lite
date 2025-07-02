@@ -2,7 +2,6 @@
 using Moq;
 using Specification.Lite.Common;
 using Specification.Lite.Evaluators;
-using Specification.Lite.Exceptions;
 using Specification.Lite.Expressions;
 
 namespace Specification.Test.Evaluators;
@@ -14,7 +13,7 @@ public class SpecificationOrderByEvaluatorTests
     {
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
-        mockSpecification.Setup(s => s.OrderByExpressions).Returns([]);
+        mockSpecification.Setup(s => s.OrderExpressions).Returns([]);
 
         var entities = new List<TestEntity>
         {
@@ -41,7 +40,7 @@ public class SpecificationOrderByEvaluatorTests
         {
             new(e => e.Id, OrderType.OrderBy)
         };
-        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
+        mockSpecification.Setup(s => s.OrderExpressions).Returns(orderExpressions);
 
         var entities = new List<TestEntity>
         {
@@ -69,7 +68,7 @@ public class SpecificationOrderByEvaluatorTests
         {
             new(e => e.Id, OrderType.OrderByDescending)
         };
-        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
+        mockSpecification.Setup(s => s.OrderExpressions).Returns(orderExpressions);
 
         var entities = new List<TestEntity>
         {
@@ -86,27 +85,5 @@ public class SpecificationOrderByEvaluatorTests
         Assert.Equal(3, result[0].Id);
         Assert.Equal(2, result[1].Id);
         Assert.Equal(1, result[2].Id);
-    }
-
-    [Fact]
-    public void ApplyOrderBy_WithDuplicateOrderChain_ThrowsException()
-    {
-        // Arrange
-        var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
-        var orderExpressions = new List<OrderExpression<TestEntity>>
-        {
-            new(e => e.Id, OrderType.OrderBy),
-            new(e => e.Name, OrderType.OrderBy) // This should cause an exception
-        };
-        mockSpecification.Setup(s => s.OrderByExpressions).Returns(orderExpressions);
-
-        var entities = new List<TestEntity>
-        {
-            new() { Id = 1, Name = "Test1" }
-        };
-        IQueryable<TestEntity> query = entities.AsQueryable();
-
-        // Act & Assert
-        Assert.Throws<DuplicateOrderChainException>(() => query.ApplyOrderBy(mockSpecification.Object).ToList());
     }
 }

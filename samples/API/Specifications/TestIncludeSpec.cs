@@ -1,5 +1,4 @@
-﻿
-using Specification.Lite;
+﻿using Specification.Lite.Extensions;
 
 namespace API.Specifications;
 

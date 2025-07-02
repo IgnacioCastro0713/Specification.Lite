@@ -10,7 +10,7 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     public ISpecificationBuilder<TEntity> Query => new SpecificationBuilder<TEntity>(this);
     public List<Expression<Func<TEntity, bool>>> WhereExpressions { get; internal set; } = [];
     public List<IncludeExpression> IncludeExpressions { get; internal set; } = [];
-    public List<OrderExpression<TEntity>> OrderByExpressions { get; internal set; } = [];
+    public List<OrderExpression<TEntity>> OrderExpressions { get; internal set; } = [];
     public int Take { get; internal set; } = -1;
     public int Skip { get; internal set; } = -1;
     public bool IsAsTracking { get; internal set; }

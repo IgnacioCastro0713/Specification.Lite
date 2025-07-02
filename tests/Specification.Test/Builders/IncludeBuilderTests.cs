@@ -2,6 +2,7 @@
 using API;
 using Specification.Lite.Builders;
 using Specification.Lite.Expressions;
+using Specification.Lite.Extensions;
 
 namespace Specification.Test.Builders;
 

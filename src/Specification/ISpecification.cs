@@ -7,7 +7,7 @@ public interface ISpecification<TEntity>
 {
     List<Expression<Func<TEntity, bool>>> WhereExpressions { get; }
     List<IncludeExpression> IncludeExpressions { get; }
-    List<OrderExpression<TEntity>> OrderByExpressions { get; }
+    List<OrderExpression<TEntity>> OrderExpressions { get; }
     int Take { get; }
     int Skip { get; }
     bool IsAsTracking { get; }

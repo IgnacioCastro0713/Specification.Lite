@@ -1,5 +1,4 @@
 ﻿namespace Specification.Lite.Builders;
-
 public interface IIncludeBuilder<TEntity, TResult, out TProperty>
     : ISpecificationBuilder<TEntity, TResult>, IIncludeBuilder<TEntity, TProperty>
     where TEntity : class;

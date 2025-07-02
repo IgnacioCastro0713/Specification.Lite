@@ -5,9 +5,9 @@ namespace Specification.Lite.Expressions;
 
 public class IncludeExpression
 {
-    public LambdaExpression LambdaExpression { get; }
-    public Type? PreviousPropertyType { get; set; }
-    public IncludeType Type { get; }
+    internal LambdaExpression LambdaExpression { get; }
+    internal Type? PreviousPropertyType { get; set; }
+    internal IncludeType Type { get; }
 
     public IncludeExpression(LambdaExpression expression)
     {

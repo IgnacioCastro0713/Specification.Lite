@@ -2,7 +2,6 @@
 using API;
 using Microsoft.EntityFrameworkCore;
 using Specification.Lite;
-using Specification.Lite.Extensions;
 
 namespace Specification.Test.Extensions;
 

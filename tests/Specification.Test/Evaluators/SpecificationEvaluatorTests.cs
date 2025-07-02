@@ -1,6 +1,6 @@
 using API;
 using Moq;
-using Specification.Lite.Evaluators;
+using Specification.Lite;
 
 namespace Specification.Test.Evaluators;
 
@@ -13,7 +13,7 @@ public class SpecificationEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
         mockSpecification.Setup(s => s.WhereExpressions).Returns([]);
         mockSpecification.Setup(s => s.IncludeExpressions).Returns([]);
-        mockSpecification.Setup(s => s.OrderByExpressions).Returns([]);
+        mockSpecification.Setup(s => s.OrderExpressions).Returns([]);
 
         IQueryable<TestEntity> query = new List<TestEntity>().AsQueryable();
 
@@ -32,7 +32,7 @@ public class SpecificationEvaluatorTests
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity, TestDto>>();
         mockSpecification.Setup(s => s.WhereExpressions).Returns([]);
         mockSpecification.Setup(s => s.IncludeExpressions).Returns([]);
-        mockSpecification.Setup(s => s.OrderByExpressions).Returns([]);
+        mockSpecification.Setup(s => s.OrderExpressions).Returns([]);
         mockSpecification.Setup(s => s.Selector).Returns((e) => new TestDto { Id = e.Id, Name = e.Name });
 
         IQueryable<TestEntity> query = new List<TestEntity> { new() { Id = 1, Name = "Test" } }.AsQueryable();
