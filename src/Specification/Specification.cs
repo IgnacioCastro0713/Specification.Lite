@@ -4,7 +4,7 @@ using Specification.Lite.Expressions;
 
 namespace Specification.Lite;
 
-public abstract class Specification<TEntity> : ISpecification<TEntity>
+public class Specification<TEntity> : ISpecification<TEntity>
 {
     public ISpecificationBuilder<TEntity> Query => new SpecificationBuilder<TEntity>(this);
     public List<Expression<Func<TEntity, bool>>> WhereExpressions { get; internal set; } = [];
@@ -18,7 +18,7 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     public bool IgnoreQueryFilters { get; internal set; } = false;
 }
 
-public abstract class Specification<TEntity, TResult> : Specification<TEntity>, ISpecification<TEntity, TResult>
+public class Specification<TEntity, TResult> : Specification<TEntity>, ISpecification<TEntity, TResult>
     where TEntity : class
 {
     public new ISpecificationBuilder<TEntity, TResult> Query => new SpecificationBuilder<TEntity, TResult>(this);

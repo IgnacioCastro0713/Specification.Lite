@@ -1,47 +1,43 @@
 ﻿using System.Linq.Expressions;
 using API;
+using Specification.Lite;
 using Specification.Lite.Builders;
 using Specification.Lite.Expressions;
-using Specification.Lite.Extensions;
 
 namespace Specification.Test.Builders;
-
 
 public class IncludeBuilderTests
 {
     [Fact]
-    public void ThenInclude_AddsThenIncludeExpression()
+    public void Include_ShouldAddIncludeExpression()
     {
         // Arrange
-        var includeExpression = new IncludeExpression<TestEntityWithRelation>((Expression<Func<TestEntityWithRelation, TestRelatedEntity>>)(e => e.Related!));
-        var builder = new IncludeBuilder<TestEntityWithRelation, TestRelatedEntity>(includeExpression);
-
-        Expression<Func<TestRelatedEntity, TestNestedEntity>> thenIncludeExpression = r => r.Nested!;
+        var specification = new Specification<TestEntity>();
+        var builder = new IncludeBuilder<TestEntity, string>(specification);
+        Expression<Func<TestEntity, string>> includeExpression = e => e.Name;
 
         // Act
-        IncludeBuilder<TestEntityWithRelation, TestNestedEntity> resultBuilder = builder.ThenInclude(thenIncludeExpression);
+        builder.Specification.IncludeExpressions.Add(new IncludeExpression(includeExpression));
 
         // Assert
-        Assert.NotNull(resultBuilder);
-        Assert.Single(includeExpression.ThenIncludes);
-        Assert.Equal(thenIncludeExpression, includeExpression.ThenIncludes[0]);
+        Assert.Single(specification.IncludeExpressions);
+        Assert.Equal(includeExpression, specification.IncludeExpressions.First().LambdaExpression);
     }
 
     [Fact]
-    public void ThenInclude_WithEnumerable_AddsThenIncludeExpression()
+    public void ThenInclude_ShouldAddThenIncludeExpression()
     {
         // Arrange
-        var includeExpression = new IncludeExpression<TestEntityWithRelation>((Expression<Func<TestEntityWithRelation, TestRelatedEntity>>)(e => e.Related!));
-        var builder = new IncludeBuilder<TestEntityWithRelation, TestRelatedEntity>(includeExpression);
-
-        Expression<Func<TestRelatedEntity, List<TestDeepEntity>>> thenIncludeExpression = r => r.Nested!.Deeps;
+        var specification = new Specification<TestEntity>();
+        var builder = new IncludeBuilder<TestEntity, TestEntityWithRelation>(specification);
+        Expression<Func<TestEntityWithRelation, TestRelatedEntity>> thenIncludeExpression = e => e.Related!;
 
         // Act
-        IncludeBuilder<TestEntityWithRelation, List<TestDeepEntity>> resultBuilder = builder.ThenInclude(thenIncludeExpression);
+        builder.Specification.IncludeExpressions.Add(new IncludeExpression(thenIncludeExpression, typeof(TestEntityWithRelation)));
 
         // Assert
-        Assert.NotNull(resultBuilder);
-        Assert.Single(includeExpression.ThenIncludes);
-        Assert.Equal(thenIncludeExpression, includeExpression.ThenIncludes[0]);
+        Assert.Single(specification.IncludeExpressions);
+        Assert.Equal(thenIncludeExpression, specification.IncludeExpressions.First().LambdaExpression);
+        Assert.Equal(typeof(TestEntityWithRelation), specification.IncludeExpressions.First().PreviousPropertyType);
     }
 }
