@@ -2,6 +2,7 @@
 using API;
 using Specification.Lite;
 using Specification.Lite.Builders;
+using Specification.Lite.Common;
 using Specification.Lite.Expressions;
 
 namespace Specification.Test.Builders;
@@ -22,6 +23,7 @@ public class IncludeBuilderTests
         // Assert
         Assert.Single(specification.IncludeExpressions);
         Assert.Equal(includeExpression, specification.IncludeExpressions.First().LambdaExpression);
+        Assert.Equal(IncludeType.Include, specification.IncludeExpressions.First().Type);
     }
 
     [Fact]
@@ -39,5 +41,6 @@ public class IncludeBuilderTests
         Assert.Single(specification.IncludeExpressions);
         Assert.Equal(thenIncludeExpression, specification.IncludeExpressions.First().LambdaExpression);
         Assert.Equal(typeof(TestEntityWithRelation), specification.IncludeExpressions.First().PreviousPropertyType);
+        Assert.Equal(IncludeType.ThenInclude, specification.IncludeExpressions.First().Type);
     }
 }
