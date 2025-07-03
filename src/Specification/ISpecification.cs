@@ -10,9 +10,10 @@ public interface ISpecification<TEntity>
     List<OrderExpression<TEntity>> OrderExpressions { get; }
     int Take { get; }
     int Skip { get; }
-    bool IsAsTracking { get; }
-    bool IsAsNoTracking { get; }
-    bool IsAsSplitQuery { get; }
+    bool AsTracking { get; }
+    bool AsNoTracking { get; }
+    bool AsSplitQuery { get; }
+    bool IgnoreQueryFilters { get; }
 }
 
 public interface ISpecification<TEntity, TResult> : ISpecification<TEntity>

@@ -13,7 +13,7 @@ public class SpecificationSplitQueryEvaluatorTests
     {
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
-        mockSpecification.Setup(s => s.IsAsSplitQuery).Returns(false);
+        mockSpecification.Setup(s => s.AsSplitQuery).Returns(false);
 
         var entities = new List<TestEntity>
         {

@@ -12,9 +12,10 @@ public abstract class Specification<TEntity> : ISpecification<TEntity>
     public List<OrderExpression<TEntity>> OrderExpressions { get; internal set; } = [];
     public int Take { get; internal set; } = -1;
     public int Skip { get; internal set; } = -1;
-    public bool IsAsTracking { get; internal set; }
-    public bool IsAsNoTracking { get; internal set; }
-    public bool IsAsSplitQuery { get; internal set; }
+    public bool AsTracking { get; internal set; } = false;
+    public bool AsNoTracking { get; internal set; } = false;
+    public bool AsSplitQuery { get; internal set; } = false;
+    public bool IgnoreQueryFilters { get; internal set; } = false;
 }
 
 public abstract class Specification<TEntity, TResult> : Specification<TEntity>, ISpecification<TEntity, TResult>

@@ -2,15 +2,15 @@
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationSplitQueryEvaluator
+public static class SpecificationAsTrackingEvaluator
 {
-    internal static IQueryable<TEntity> SplitQuery<TEntity>(
+    internal static IQueryable<TEntity> AsTracking<TEntity>(
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        if (specification.AsSplitQuery)
+        if (specification.AsTracking)
         {
-            query = query.AsSplitQuery();
+            query = query.AsTracking();
         }
 
         return query;

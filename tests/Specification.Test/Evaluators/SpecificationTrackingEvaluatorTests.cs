@@ -15,8 +15,8 @@ public class SpecificationTrackingEvaluatorTests
     {
         // Arrange
         var mockSpecification = new Mock<Lite.ISpecification<TestEntity>>();
-        mockSpecification.Setup(s => s.IsAsNoTracking).Returns(false);
-        mockSpecification.Setup(s => s.IsAsTracking).Returns(false);
+        mockSpecification.Setup(s => s.AsNoTracking).Returns(false);
+        mockSpecification.Setup(s => s.AsTracking).Returns(false);
 
         var entities = new List<TestEntity>
         {

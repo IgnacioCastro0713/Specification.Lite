@@ -13,7 +13,9 @@ public static class SpecificationEvaluator
             .Include(specification)
             .Order(specification)
             .Paging(specification)
-            .Tracking(specification)
+            .AsNoTracking(specification)
+            .AsTracking(specification)
+            .IgnoreQueryFilters(specification)
             .SplitQuery(specification);
     }
 

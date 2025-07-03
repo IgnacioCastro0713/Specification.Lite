@@ -13,7 +13,7 @@ public static partial class SpecificationBuilderExtensions
 
     public static ISpecificationBuilder<TEntity> SplitQuery<TEntity>(this ISpecificationBuilder<TEntity> builder)
     {
-        builder.Specification.IsAsSplitQuery = true;
+        builder.Specification.AsSplitQuery = true;
 
         return builder;
     }
