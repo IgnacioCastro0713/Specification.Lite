@@ -47,12 +47,12 @@
 Install via NuGet Package Manager:
 
 ```pwsh
-dotnet add package Specification.Lite --version 1.0.1
+dotnet add package Specification.Lite --version 1.0.2
 ```
 Or add to your project file:
 
 ```xml
-<PackageReference Include="Specification.Lite" Version="1.0.1" />
+<PackageReference Include="Specification.Lite" Version="1.0.2" />
 ```
 
 ---
