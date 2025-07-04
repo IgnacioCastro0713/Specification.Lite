@@ -25,7 +25,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.x'
+        dotnet-version: '9.x'
         
     - name: Restore dependencies
       run: dotnet restore src/Specification/Specification.csproj
@@ -34,7 +34,7 @@ jobs:
       run: dotnet build src/Specification/Specification.csproj --configuration Release --no-restore
       
     - name: Test
-      run: dotnet test tests/Specification.Test/Specification.Test.csproj --configuration Debug --framework net8.0
+      run: dotnet test tests/Specification.Test/Specification.Test.csproj --configuration Debug --framework net9.0
 
     - name: Extract version
       id: get_version
