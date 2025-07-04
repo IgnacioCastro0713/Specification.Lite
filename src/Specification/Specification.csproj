@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<RootNamespace>Specification.Lite</RootNamespace>
 		<AssemblyName>Specification.Lite</AssemblyName>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -15,8 +15,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="EntityFramework" />
 		<PackageReference Include="Microsoft.CSharp" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
 	</ItemGroup>
 
