@@ -1,5 +1,5 @@
 # Specification.Lite
-
+![Release](https://github.com/IgnacioCastro0713/Specification.Lite/actions/workflows/build-release.yml/badge.svg)
 [![NuGet](https://img.shields.io/nuget/dt/Specification.Lite.svg)](https://www.nuget.org/packages/Specification.Lite)
 [![NuGet](https://img.shields.io/nuget/vpre/Specification.Lite.svg)](https://www.nuget.org/packages/Specification.Lite)
 [![GitHub](https://img.shields.io/github/license/IgnacioCastro0713/Specification.Lite?style=flat-square)](https://github.com/IgnacioCastro0713/Specification.Lite/blob/main/LICENSE)
@@ -32,7 +32,7 @@
   Control whether entities are tracked by the context with `AsTracking` and `AsNoTracking` for optimal performance.
 
 - **SplitQuery:**  
-  Enables the use of EF Core’s `AsSplitQuery` to optimize queries containing multiple includes, preventing the cartesian explosion problem.
+  Enables the use of EF Coreâ€™s `AsSplitQuery` to optimize queries containing multiple includes, preventing the cartesian explosion problem.
 
 - **IgnoreQueryFilters:**  
   Allows you to bypass global query filters (such as soft delete or multi-tenancy) by applying `IgnoreQueryFilters` in your specifications.
