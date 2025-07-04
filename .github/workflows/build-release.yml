@@ -31,7 +31,7 @@ jobs:
       run: dotnet restore src/Specification/Specification.csproj
 
     - name: Build
-      run: dotnet build src/Specification/Specification.csproj --configuration Release --no-restore
+      run: dotnet build src/Specification/Specification.csproj --configuration Release --no-restore --framework net9.0
       
     - name: Test
       run: dotnet test tests/Specification.Test/Specification.Test.csproj --configuration Debug --framework net9.0
