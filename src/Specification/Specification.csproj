@@ -2,7 +2,6 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<RootNamespace>Specification.Lite</RootNamespace>
-		<AssemblyName>Specification.Lite</AssemblyName>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>12.0</LangVersion>

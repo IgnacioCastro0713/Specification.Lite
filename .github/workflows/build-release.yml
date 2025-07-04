@@ -11,9 +11,9 @@ on:
 jobs:
   build:
     strategy:
-      matrix:
-        os: [ubuntu-latest]
-      fail-fast: false
+        matrix:
+          os: [ubuntu-latest]
+        fail-fast: false
     runs-on: ubuntu-latest
 
     steps:
@@ -21,30 +21,25 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
+        
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: |
-          8.x
-          9.x
-
+        dotnet-version: '9.x'
+        
     - name: Restore dependencies
       run: dotnet restore src/Specification/Specification.csproj
 
     - name: Build
       run: dotnet build src/Specification/Specification.csproj --configuration Release --no-restore
-
-    - name: Test (net8.0)
-      run: dotnet test tests/Specification.Test/Specification.Test.csproj --configuration Debug --framework net8.0
-
-    - name: Test (net9.0)
+      
+    - name: Test
       run: dotnet test tests/Specification.Test/Specification.Test.csproj --configuration Debug --framework net9.0
 
     - name: Extract version
       id: get_version
       run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
-
+        
     - name: Pack project
       run: dotnet pack src/Specification/Specification.csproj --configuration Release --no-build -o ./nupkgs /p:PackageVersion=${{ steps.get_version.outputs.version }}
 
