@@ -1,47 +1,135 @@
 # Specification.Lite
 
-[![NuGet](https://img.shields.io/nuget/dt/Specification.Lite.svg)](https://www.nuget.org/packages/Specification.Lite) 
+[![NuGet](https://img.shields.io/nuget/dt/Specification.Lite.svg)](https://www.nuget.org/packages/Specification.Lite)
 [![NuGet](https://img.shields.io/nuget/vpre/Specification.Lite.svg)](https://www.nuget.org/packages/Specification.Lite)
 [![GitHub](https://img.shields.io/github/license/IgnacioCastro0713/Specification.Lite?style=flat-square)](https://github.com/IgnacioCastro0713/Specification.Lite/blob/main/LICENSE)
 
-Specification.Lite is a lightweight library designed to simplify the implementation of the Specification pattern in .NET applications. It provides a flexible and reusable way to define and apply business rules, filtering, ordering, and projections to queries.
+**Specification.Lite** is a lightweight .NET library that streamlines the implementation of the Specification pattern. It helps you encapsulate, reuse, and combine business rules, predicates, and query logic in a flexible and maintainable way.
+
+---
 
 ## Features
 
-### 1. Specification Pattern
-- Define reusable business rules and query logic using specifications.
-- Supports filtering, ordering, projections, and includes.
+- **Specification Pattern:**  
+  Define reusable business rules and query logic using strongly-typed specifications. Encapsulate complex predicates into composable objects.
 
-### 2. Query Extensions
-- Apply specifications directly to `IQueryable` objects.
-- Supports asynchronous operations like `ToListAsync`, `FirstOrDefaultAsync`, `SingleOrDefaultAsync`, and `AnyAsync`.
+- **Query Extensions:**  
+  Apply specifications directly to `IQueryable` objects for filtering, ordering, and projecting data. Supports asynchronous LINQ operations like `ToListAsync`, `FirstOrDefaultAsync`, `SingleOrDefaultAsync`, and `AnyAsync`.
 
-### 3. Include Expressions
-- Define navigation properties to include in queries using `Include` and `ThenInclude`.
+- **Include Expressions:**  
+  Eagerly load related entities in queries using `Include` and `ThenInclude`, just like in Entity Framework.
 
-### 4. Ordering
-- Apply ordering to queries using `OrderBy` and `OrderByDescending`.
+- **Ordering:**  
+  Easily apply ordering to queries with `OrderBy` and `OrderByDescending` methods on your specifications.
 
-### 5. Projection
-- Transform entities into DTOs or other result types using `Select` and `SelectMany`.
+- **Projection:**  
+  Transform entities to DTOs or other result types within the specification using `Select` and `SelectMany`.
 
-### 6. Tracking
-- Control entity tracking behavior with `AsTracking` and `AsNoTracking`.
+- **Skip & Take:**  
+  Effortlessly paginate query results using `Skip` and `Take` inside your specifications.
 
-### 7. Integration with Entity Framework
-- Seamlessly integrates with Entity Framework for database queries.
+- **Tracking:**  
+  Control whether entities are tracked by the context with `AsTracking` and `AsNoTracking` for optimal performance.
 
-## NuGet package:
+- **SplitQuery:**  
+  Enables the use of EF Core’s `AsSplitQuery` to optimize queries containing multiple includes, preventing the cartesian explosion problem.
+
+- **IgnoreQueryFilters:**  
+  Allows you to bypass global query filters (such as soft delete or multi-tenancy) by applying `IgnoreQueryFilters` in your specifications.
+
+- **Entity Framework Integration:**  
+  Seamlessly integrates with Entity Framework Core, making it easy to use specifications in your repositories or DbContext queries.
+
+---
+
+## Installation
+
+Install via NuGet Package Manager:
 
 ```pwsh
-dotnet add package Specification.Lite --version 0.0.1
+dotnet add package Specification.Lite --version 1.0.0
 ```
-or
+Or add to your project file:
+
 ```xml
-<PackageReference Include="Specification.Lite" Version="0.0.1" />
+<PackageReference Include="Specification.Lite" Version="1.0.0" />
 ```
 
+---
+
+## Usage Examples
+
+### Simple Example
+
+Define a basic specification and use it to query active users:
+
+```csharp
+// Define a simple specification for active users
+public class ActiveUsersSpecification : Specification<User>
+{
+    public ActiveUsersSpecification()
+    {
+        Query
+            .Include(u => u.Orders)
+            .Where(user => user.IsActive);
+    }
+}
+
+// Usage in your repository or DbContext
+var spec = new ActiveUsersSpecification();
+var activeUsers = await dbContext.Users.WithSpecification(spec).ToListAsync();
+
+// Or directly using the DbContext
+var activeUsers = await dbContext.Users.ToListAsync(spec);
+```
+
+---
+
+### Complex Example
+
+Combine filtering, includes, ordering, projection, pagination, split queries, ignoring query filters, and no-tracking:
+
+```csharp
+// Complex specification: Get all active users who registered after 2024-01-01,
+// include their orders (with order items), ordered by registration date descending,
+// project to a custom DTO, paginate results, use split queries, ignore global query filters, and return as no-tracking.
+
+public class RecentActiveUsersWithOrdersSpec : Specification<User, UserSummaryDto>
+{
+    public RecentActiveUsersWithOrdersSpec(DateTime since, int skip, int take)
+    {
+        Query
+            .Where(u => u.IsActive && u.RegisteredAt >= since)
+            .Include(u => u.Orders)
+                .ThenInclude(o => o.OrderItems)
+            .OrderByDescending(u => u.RegisteredAt)
+            .Skip(skip)
+            .Take(take)
+            .AsNoTracking()
+            .AsSplitQuery()
+            .IgnoreQueryFilters()
+            .Select(u => new UserSummaryDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                OrderCount = u.Orders.Count,
+                TotalSpent = u.Orders.Sum(o => o.TotalAmount)
+            });
+    }
+}
+
+// Usage in your application code
+var spec = new RecentActiveUsersWithOrdersSpec(new DateTime(2024, 1, 1), skip: 20, take: 10);
+var summaries = await dbContext.Users.WithSpecification(spec).ToListAsync();
+
+// Or directly using the DbContext
+var summaries = await dbContext.Users.ToListAsync(spec);
+```
+
+See the [examples folder](./examples).
+
+---
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome\! Feel free to check.
+Contributions, issues, and feature requests are welcome! or open an issue to get started.
