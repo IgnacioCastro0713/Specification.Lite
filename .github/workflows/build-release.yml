@@ -26,6 +26,9 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.x'
+
+    - name: Clean output
+      run: rm -rf src/Specification/bin/Release/*
         
     - name: Restore dependencies
       run: dotnet restore src/Specification/Specification.csproj
