@@ -29,6 +29,9 @@ jobs:
 
     - name: Clean output
       run: rm -rf src/Specification/bin/Release/*
+          
+    - name: Clean
+      run: dotnet build src/Specification/Specification.csproj
         
     - name: Restore dependencies
       run: dotnet restore src/Specification/Specification.csproj
