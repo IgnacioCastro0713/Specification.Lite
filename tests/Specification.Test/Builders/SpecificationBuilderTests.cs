@@ -1,6 +1,8 @@
 ﻿using API;
 using Specification.Lite;
 using Specification.Lite.Builders;
+using Specification.Lite.Common;
+using Specification.Lite.Expressions;
 
 namespace Specification.Test.Builders;
 
@@ -71,5 +73,37 @@ public class SpecificationBuilderTests
 
         // Assert
         Assert.IsAssignableFrom<ISpecificationBuilder<TestEntity, TestDto>>(builder);
+    }
+
+    [Fact]
+    public void SpecificationBuilder_ShouldAddOrderExpression()
+    {
+        // Arrange
+        var specification = new Specification<TestEntity>();
+        var builder = new SpecificationBuilder<TestEntity>(specification);
+
+        // Act
+        builder.Specification.OrderExpressions.Add(new OrderExpression<TestEntity>(e => e.Name, OrderType.OrderBy));
+
+        // Assert
+        Assert.Single(specification.OrderExpressions);
+        Assert.Equal(OrderType.OrderBy, specification.OrderExpressions.First().OrderType);
+        Assert.Equal("e => e.Name", specification.OrderExpressions.First().KeySelector.ToString());
+    }
+
+    [Fact]
+    public void SpecificationBuilderWithResult_ShouldAddOrderExpression()
+    {
+        // Arrange
+        var specification = new Specification<TestEntity, TestDto>();
+        var builder = new SpecificationBuilder<TestEntity, TestDto>(specification);
+
+        // Act
+        builder.Specification.OrderExpressions.Add(new OrderExpression<TestEntity>(e => e.Id, OrderType.OrderByDescending));
+
+        // Assert
+        Assert.Single(specification.OrderExpressions);
+        Assert.Equal(OrderType.OrderByDescending, specification.OrderExpressions.First().OrderType);
+        Assert.Equal("e => Convert(e.Id, Object)", specification.OrderExpressions.First().KeySelector.ToString());
     }
 }

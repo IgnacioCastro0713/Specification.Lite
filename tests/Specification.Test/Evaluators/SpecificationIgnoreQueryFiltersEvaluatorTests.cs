@@ -1,5 +1,7 @@
 ﻿using API;
+using Microsoft.EntityFrameworkCore;
 using Specification.Lite;
+using Specification.Lite.Evaluators;
 
 namespace Specification.Test.Evaluators;
 
@@ -23,10 +25,11 @@ public class SpecificationIgnoreQueryFiltersEvaluatorTests
     }
 
     [Fact]
-    public void IgnoreQueryFilters_ShouldNotApplyIgnoreQueryFilters_WhenDisabled()
+    public void IgnoreQueryFilters_ShouldBeFalseByDefault()
     {
+        // Arrange
         var specification = new Specification<TestEntity>();
-        var specificationResult = new Specification<TestEntity, string>();
+        var specificationResult = new Specification<TestEntity, TestDto>();
 
         // Act & Assert
         Assert.False(specification.IgnoreQueryFilters);
