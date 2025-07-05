@@ -1,6 +1,6 @@
 ﻿namespace Specification.Lite.Evaluators;
 
-public class Evaluator
+public sealed class Evaluator
 {
     public static Evaluator Instance { get; } = new();
 

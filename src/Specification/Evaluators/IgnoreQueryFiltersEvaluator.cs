@@ -2,7 +2,7 @@
 
 namespace Specification.Lite.Evaluators;
 
-public class IgnoreQueryFiltersEvaluator : IEvaluator
+public sealed class IgnoreQueryFiltersEvaluator : IEvaluator
 {
     public static IgnoreQueryFiltersEvaluator Instance { get; } = new();
 

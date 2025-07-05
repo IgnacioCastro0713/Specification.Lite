@@ -3,7 +3,7 @@ using Specification.Lite.Common;
 
 namespace Specification.Lite.Expressions;
 
-public class OrderExpression<TEntity>(
+public sealed class OrderExpression<TEntity>(
     Expression<Func<TEntity, object?>> expression,
     OrderType orderType)
 {

@@ -1,6 +1,6 @@
 ﻿namespace Specification.Lite.Evaluators;
 
-public class WhereEvaluator : IEvaluator
+public sealed class WhereEvaluator : IEvaluator
 {
     public static WhereEvaluator Instance { get; } = new();
 

@@ -3,7 +3,7 @@ using Specification.Lite.Common;
 
 namespace Specification.Lite.Expressions;
 
-public class IncludeExpression
+public sealed class IncludeExpression
 {
     internal LambdaExpression LambdaExpression { get; }
     internal Type? PreviousPropertyType { get; set; }

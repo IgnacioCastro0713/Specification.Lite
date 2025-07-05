@@ -2,7 +2,7 @@
 
 namespace Specification.Lite.Evaluators;
 
-public class SplitQueryEvaluator : IEvaluator
+public sealed class SplitQueryEvaluator : IEvaluator
 {
     public static SplitQueryEvaluator Instance { get; } = new();
 

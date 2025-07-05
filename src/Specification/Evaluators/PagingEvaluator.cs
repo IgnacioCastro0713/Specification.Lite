@@ -1,6 +1,6 @@
 ﻿namespace Specification.Lite.Evaluators;
 
-public class PagingEvaluator : IEvaluator
+public sealed class PagingEvaluator : IEvaluator
 {
     public static PagingEvaluator Instance { get; } = new();
 

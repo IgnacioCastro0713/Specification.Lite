@@ -2,7 +2,7 @@
 
 namespace Specification.Lite.Evaluators;
 
-public class AsNoTrackingEvaluator : IEvaluator
+public sealed class AsNoTrackingEvaluator : IEvaluator
 {
     public static AsNoTrackingEvaluator Instance { get; } = new();
 

@@ -3,7 +3,7 @@ using Specification.Lite.Expressions;
 
 namespace Specification.Lite.Evaluators;
 
-public class OrderEvaluator : IEvaluator
+public sealed class OrderEvaluator : IEvaluator
 {
     public static OrderEvaluator Instance { get; } = new();
 
