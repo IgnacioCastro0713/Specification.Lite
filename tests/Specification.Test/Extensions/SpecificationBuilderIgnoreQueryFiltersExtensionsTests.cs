@@ -2,7 +2,7 @@
 using Specification.Lite;
 
 namespace Specification.Test.Extensions;
-public class SpecificationBuilderQueryFiltersExtensionsTests
+public class SpecificationBuilderIgnoreQueryFiltersExtensionsTests
 {
     [Fact]
     public void IgnoreQueryFilters_ShouldApplyIgnoreQueryFilters_WhenEnabled()
