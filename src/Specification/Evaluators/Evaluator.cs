@@ -11,6 +11,7 @@ public sealed class Evaluator
         OrderEvaluator.Instance,
         PagingEvaluator.Instance,
         AsNoTrackingEvaluator.Instance,
+        AsNoTrackingWithIdentityResolutionEvaluator.Instance,
         AsTrackingEvaluator.Instance,
         IgnoreQueryFiltersEvaluator.Instance,
         SplitQueryEvaluator.Instance
