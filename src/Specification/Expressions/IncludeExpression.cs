@@ -11,15 +11,20 @@ public class IncludeExpression
 
     public IncludeExpression(LambdaExpression expression)
     {
-        LambdaExpression = expression ?? throw new ArgumentNullException(nameof(expression));
+        ArgumentNullException.ThrowIfNull(expression);
+
+        LambdaExpression = expression;
         PreviousPropertyType = null;
         Type = IncludeType.Include;
     }
 
     public IncludeExpression(LambdaExpression expression, Type propertyType)
     {
-        LambdaExpression = expression ?? throw new ArgumentNullException(nameof(expression));
-        PreviousPropertyType = propertyType ?? throw new ArgumentNullException(nameof(propertyType));
+        ArgumentNullException.ThrowIfNull(expression);
+        ArgumentNullException.ThrowIfNull(propertyType);
+
+        LambdaExpression = expression;
+        PreviousPropertyType = propertyType;
         Type = IncludeType.ThenInclude;
     }
 }

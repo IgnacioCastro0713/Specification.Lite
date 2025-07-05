@@ -1,11 +1,8 @@
 ﻿using API;
-using Microsoft.EntityFrameworkCore;
 using Specification.Lite;
-using Specification.Lite.Evaluators;
 
-namespace Specification.Test.Evaluators;
-
-public class SpecificationIgnoreQueryFiltersEvaluatorTests
+namespace Specification.Test.Extensions;
+public class SpecificationBuilderQueryFiltersExtensionsTests
 {
     [Fact]
     public void IgnoreQueryFilters_ShouldApplyIgnoreQueryFilters_WhenEnabled()

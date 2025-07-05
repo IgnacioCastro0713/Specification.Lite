@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -7,8 +8,10 @@ using IncludeExpression = Specification.Lite.Expressions.IncludeExpression;
 
 namespace Specification.Lite.Evaluators;
 
-public class SpecificationIncludesEvaluator : IEvaluator
+public class IncludesEvaluator : IEvaluator
 {
+    public static IncludesEvaluator Instance { get; } = new();
+
     private static readonly MethodInfo IncludeMethodInfo = typeof(EntityFrameworkQueryableExtensions)
         .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.Include))
         .Single(methodInfo => methodInfo.IsPublic && methodInfo.GetGenericArguments().Length == 2
@@ -29,6 +32,8 @@ public class SpecificationIncludesEvaluator : IEvaluator
                                       && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>)
                                       && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
 
+    private static readonly ConcurrentDictionary<string, Func<IQueryable, LambdaExpression, IQueryable>> IncludeDelegateCache = new();
+
     public IQueryable<TEntity> Evaluate<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
@@ -41,20 +46,24 @@ public class SpecificationIncludesEvaluator : IEvaluator
         });
     }
 
-    private static IQueryable<TEntity> Include<TEntity>(IQueryable<TEntity> query, IncludeExpression includeExpression) where TEntity : class
+    private static IQueryable<TEntity> Include<TEntity>(IQueryable<TEntity> query, IncludeExpression includeExpression)
+        where TEntity : class
     {
-        ParameterExpression queryableParameter = Expression.Parameter(typeof(IQueryable));
-        ParameterExpression lambdaParameter = Expression.Parameter(typeof(LambdaExpression));
+        string key = $"Include:{typeof(TEntity).FullName}:{includeExpression.LambdaExpression.ReturnType.FullName}";
+        Func<IQueryable, LambdaExpression, IQueryable> del = IncludeDelegateCache.GetOrAdd(key, _ =>
+        {
+            ParameterExpression queryableParameter = Expression.Parameter(typeof(IQueryable));
+            ParameterExpression lambdaParameter = Expression.Parameter(typeof(LambdaExpression));
 
-        MethodCallExpression call = Expression.Call(
-            IncludeMethodInfo.MakeGenericMethod(typeof(TEntity), includeExpression.LambdaExpression.ReturnType),
-            Expression.Convert(queryableParameter, typeof(IQueryable<>).MakeGenericType(typeof(TEntity))),
-            Expression.Convert(lambdaParameter, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(typeof(TEntity), includeExpression.LambdaExpression.ReturnType))));
+            MethodCallExpression call = Expression.Call(
+                IncludeMethodInfo.MakeGenericMethod(typeof(TEntity), includeExpression.LambdaExpression.ReturnType),
+                Expression.Convert(queryableParameter, typeof(IQueryable<>).MakeGenericType(typeof(TEntity))),
+                Expression.Convert(lambdaParameter, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(typeof(TEntity), includeExpression.LambdaExpression.ReturnType))));
 
-        var lambda = Expression.Lambda<Func<IQueryable, LambdaExpression, IQueryable>>(call, queryableParameter, lambdaParameter);
-        Func<IQueryable, LambdaExpression, IQueryable> compiledLambda = lambda.Compile();
-        query = (IQueryable<TEntity>)compiledLambda(query, includeExpression.LambdaExpression);
-
+            var lambda = Expression.Lambda<Func<IQueryable, LambdaExpression, IQueryable>>(call, queryableParameter, lambdaParameter);
+            return lambda.Compile();
+        });
+        query = (IQueryable<TEntity>)del(query, includeExpression.LambdaExpression);
         return query;
     }
 
@@ -63,19 +72,21 @@ public class SpecificationIncludesEvaluator : IEvaluator
     {
         bool isEnumerable = IsGenericEnumerable(includeExpression.PreviousPropertyType!, out Type previousPropertyType);
         MethodInfo methodInfo = isEnumerable ? ThenIncludeAfterEnumerableMethodInfo : ThenIncludeAfterReferenceMethodInfo;
+        string key = $"ThenInclude:{typeof(TEntity).FullName}:{previousPropertyType.FullName}:{includeExpression.LambdaExpression.ReturnType.FullName}";
+        Func<IQueryable, LambdaExpression, IQueryable> del = IncludeDelegateCache.GetOrAdd(key, _ =>
+        {
+            ParameterExpression queryableParameter = Expression.Parameter(typeof(IQueryable));
+            ParameterExpression lambdaParameter = Expression.Parameter(typeof(LambdaExpression));
 
-        ParameterExpression queryableParameter = Expression.Parameter(typeof(IQueryable));
-        ParameterExpression lambdaParameter = Expression.Parameter(typeof(LambdaExpression));
+            MethodCallExpression call = Expression.Call(
+                methodInfo.MakeGenericMethod(typeof(TEntity), previousPropertyType, includeExpression.LambdaExpression.ReturnType),
+                Expression.Convert(queryableParameter, typeof(IIncludableQueryable<,>).MakeGenericType(typeof(TEntity), includeExpression.PreviousPropertyType!)),
+                Expression.Convert(lambdaParameter, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(previousPropertyType, includeExpression.LambdaExpression.ReturnType))));
 
-        MethodCallExpression call = Expression.Call(
-            methodInfo.MakeGenericMethod(typeof(TEntity), previousPropertyType, includeExpression.LambdaExpression.ReturnType),
-            Expression.Convert(queryableParameter, typeof(IIncludableQueryable<,>).MakeGenericType(typeof(TEntity), includeExpression.PreviousPropertyType!)),
-            Expression.Convert(lambdaParameter, typeof(Expression<>).MakeGenericType(typeof(Func<,>).MakeGenericType(previousPropertyType, includeExpression.LambdaExpression.ReturnType))));
-
-        var lambda = Expression.Lambda<Func<IQueryable, LambdaExpression, IQueryable>>(call, queryableParameter, lambdaParameter);
-        Func<IQueryable, LambdaExpression, IQueryable> compiledLambda = lambda.Compile();
-        query = (IQueryable<TEntity>)compiledLambda(query, includeExpression.LambdaExpression);
-
+            var lambda = Expression.Lambda<Func<IQueryable, LambdaExpression, IQueryable>>(call, queryableParameter, lambdaParameter);
+            return lambda.Compile();
+        });
+        query = (IQueryable<TEntity>)del(query, includeExpression.LambdaExpression);
         return query;
     }
 

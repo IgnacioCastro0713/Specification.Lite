@@ -10,7 +10,7 @@ public static class QueryableExtensions
         this IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        query = SpecificationEvaluator.Instance.GetQuery(query, specification);
+        query = Evaluator.Instance.GetQuery(query, specification);
 
         return query;
     }

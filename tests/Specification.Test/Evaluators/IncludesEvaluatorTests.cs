@@ -1,6 +1,6 @@
 ﻿namespace Specification.Test.Evaluators;
 
-public class OrderEvaluatorTests
+public class IncludesEvaluatorTests
 {
 
 }

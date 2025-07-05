@@ -1,7 +1,9 @@
 ﻿namespace Specification.Lite.Evaluators;
 
-public class SpecificationPagingEvaluator : IEvaluator
+public class PagingEvaluator : IEvaluator
 {
+    public static PagingEvaluator Instance { get; } = new();
+
     public IQueryable<TEntity> Evaluate<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class

@@ -3,9 +3,9 @@ using API;
 using Specification.Lite;
 using Specification.Lite.Expressions;
 
-namespace Specification.Test.Evaluators;
+namespace Specification.Test.Extensions;
 
-public class SpecificationSplitQueryEvaluatorTests
+public class SpecificationBuilderSplitQueryExtensionsTests
 {
     [Fact]
     public void SplitQuery_ShouldApplySplitQuery_WhenEnabled()

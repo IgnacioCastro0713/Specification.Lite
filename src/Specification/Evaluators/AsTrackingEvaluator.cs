@@ -2,8 +2,10 @@
 
 namespace Specification.Lite.Evaluators;
 
-public class SpecificationAsTrackingEvaluator : IEvaluator
+public class AsTrackingEvaluator : IEvaluator
 {
+    public static AsTrackingEvaluator Instance { get; } = new();
+
     public IQueryable<TEntity> Evaluate<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
