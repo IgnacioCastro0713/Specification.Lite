@@ -2,10 +2,10 @@
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationIgnoreQueryFiltersEvaluator
+public class SpecificationIgnoreQueryFiltersEvaluator : IEvaluator
 {
-    internal static IQueryable<TEntity> IgnoreQueryFilters<TEntity>(
-        this IQueryable<TEntity> query,
+    public IQueryable<TEntity> Evaluate<TEntity>(
+        IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
         if (specification.IgnoreQueryFilters)

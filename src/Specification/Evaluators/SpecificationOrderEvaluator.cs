@@ -3,10 +3,10 @@ using Specification.Lite.Expressions;
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationOrderEvaluator
+public class SpecificationOrderEvaluator : IEvaluator
 {
-    internal static IQueryable<TEntity> Order<TEntity>(
-        this IQueryable<TEntity> query,
+    public IQueryable<TEntity> Evaluate<TEntity>(
+        IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
         IOrderedQueryable<TEntity>? orderedQuery = specification

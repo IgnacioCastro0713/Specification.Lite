@@ -1,31 +1,28 @@
-﻿using Specification.Lite.Evaluators;
+﻿namespace Specification.Lite.Evaluators;
 
-namespace Specification.Lite;
-
-public static class SpecificationEvaluator
+public class SpecificationEvaluator
 {
-    public static IQueryable<TEntity> WithSpecification<TEntity>(
-        this IQueryable<TEntity> query,
+    public static SpecificationEvaluator Instance { get; } = new();
+
+    private readonly List<IEvaluator> _evaluators =
+    [
+        new SpecificationWhereEvaluator(),
+        new SpecificationIncludesEvaluator(),
+        new SpecificationOrderEvaluator(),
+        new SpecificationPagingEvaluator(),
+        new SpecificationAsNoTrackingEvaluator(),
+        new SpecificationAsTrackingEvaluator(),
+        new SpecificationIgnoreQueryFiltersEvaluator(),
+        new SpecificationSplitQueryEvaluator(),
+    ];
+
+    public IQueryable<TEntity> GetQuery<TEntity>(
+        IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        return query
-            .Where(specification)
-            .Include(specification)
-            .Order(specification)
-            .Paging(specification)
-            .AsNoTracking(specification)
-            .AsTracking(specification)
-            .IgnoreQueryFilters(specification)
-            .SplitQuery(specification);
-    }
+        ArgumentNullException.ThrowIfNull(specification);
 
-    public static IQueryable<TResult> WithSpecification<TEntity, TResult>(
-        this IQueryable<TEntity> query,
-        ISpecification<TEntity, TResult> specification)
-        where TEntity : class
-    {
-        return query
-            .WithSpecification<TEntity>(specification)
-            .Selectors(specification);
+        return _evaluators
+            .Aggregate(query, (current, evaluator) => evaluator.Evaluate(current, specification));
     }
 }

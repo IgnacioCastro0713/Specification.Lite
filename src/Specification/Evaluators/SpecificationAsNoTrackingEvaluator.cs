@@ -2,10 +2,10 @@
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationAsNoTrackingEvaluator
+public class SpecificationAsNoTrackingEvaluator : IEvaluator
 {
-    internal static IQueryable<TEntity> AsNoTracking<TEntity>(
-        this IQueryable<TEntity> query,
+    public IQueryable<TEntity> Evaluate<TEntity>(
+        IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
         if (specification.AsNoTracking)

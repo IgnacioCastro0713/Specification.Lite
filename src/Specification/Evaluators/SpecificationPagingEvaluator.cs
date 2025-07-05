@@ -1,9 +1,9 @@
 ﻿namespace Specification.Lite.Evaluators;
 
-public static class SpecificationPagingEvaluator
+public class SpecificationPagingEvaluator : IEvaluator
 {
-    internal static IQueryable<TEntity> Paging<TEntity>(
-        this IQueryable<TEntity> query,
+    public IQueryable<TEntity> Evaluate<TEntity>(
+        IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
         if (specification.Skip > 0)

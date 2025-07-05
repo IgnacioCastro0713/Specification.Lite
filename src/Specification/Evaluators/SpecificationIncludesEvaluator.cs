@@ -7,7 +7,7 @@ using IncludeExpression = Specification.Lite.Expressions.IncludeExpression;
 
 namespace Specification.Lite.Evaluators;
 
-public static class SpecificationIncludesEvaluator
+public class SpecificationIncludesEvaluator : IEvaluator
 {
     private static readonly MethodInfo IncludeMethodInfo = typeof(EntityFrameworkQueryableExtensions)
         .GetTypeInfo().GetDeclaredMethods(nameof(EntityFrameworkQueryableExtensions.Include))
@@ -29,17 +29,19 @@ public static class SpecificationIncludesEvaluator
                                       && methodInfo.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IIncludableQueryable<,>)
                                       && methodInfo.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
 
-    internal static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> query, ISpecification<TEntity> specification) where TEntity : class
+    public IQueryable<TEntity> Evaluate<TEntity>(
+        IQueryable<TEntity> query,
+        ISpecification<TEntity> specification) where TEntity : class
     {
         return specification.IncludeExpressions.Aggregate(query, (current, includeExpression) => includeExpression.Type switch
         {
-            IncludeType.Include => current.Include(includeExpression),
-            IncludeType.ThenInclude => current.ThenInclude(includeExpression),
+            IncludeType.Include => Include(current, includeExpression),
+            IncludeType.ThenInclude => ThenInclude(current, includeExpression),
             _ => current
         });
     }
 
-    private static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> query, IncludeExpression includeExpression) where TEntity : class
+    private static IQueryable<TEntity> Include<TEntity>(IQueryable<TEntity> query, IncludeExpression includeExpression) where TEntity : class
     {
         ParameterExpression queryableParameter = Expression.Parameter(typeof(IQueryable));
         ParameterExpression lambdaParameter = Expression.Parameter(typeof(LambdaExpression));
@@ -56,7 +58,7 @@ public static class SpecificationIncludesEvaluator
         return query;
     }
 
-    private static IQueryable<TEntity> ThenInclude<TEntity>(this IQueryable<TEntity> query, IncludeExpression includeExpression)
+    private static IQueryable<TEntity> ThenInclude<TEntity>(IQueryable<TEntity> query, IncludeExpression includeExpression)
         where TEntity : class
     {
         bool isEnumerable = IsGenericEnumerable(includeExpression.PreviousPropertyType!, out Type previousPropertyType);
