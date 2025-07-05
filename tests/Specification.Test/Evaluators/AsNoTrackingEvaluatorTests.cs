@@ -22,10 +22,6 @@ public class AsNoTrackingEvaluatorTests
 
         // Assert
         Assert.IsAssignableFrom<IQueryable<TestEntity>>(result);
-
-        // If using EF Core, you could check if result is a query with AsNoTracking enabled.
-        // But with plain IQueryable, you can't verify tracking status, only that it returns the query.
-        // The main purpose here is branch coverage.
     }
 
     [Fact]

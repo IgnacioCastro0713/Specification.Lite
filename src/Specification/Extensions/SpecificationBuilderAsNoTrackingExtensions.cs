@@ -1,5 +1,4 @@
 ﻿using Specification.Lite.Builders;
-using Specification.Lite.Exceptions;
 
 namespace Specification.Lite;
 
@@ -14,12 +13,9 @@ public static partial class SpecificationBuilderExtensions
 
     public static ISpecificationBuilder<TEntity> AsNoTracking<TEntity>(this ISpecificationBuilder<TEntity> builder)
     {
-        if (builder.Specification.AsTracking)
-        {
-            throw new ConcurrentTrackingException();
-        }
-
         builder.Specification.AsNoTracking = true;
+        builder.Specification.AsTracking = false;
+        builder.Specification.AsNoTrackingWithIdentityResolution = false;
 
         return builder;
     }

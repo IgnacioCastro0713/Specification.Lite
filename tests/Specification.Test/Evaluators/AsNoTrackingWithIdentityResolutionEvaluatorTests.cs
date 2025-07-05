@@ -5,17 +5,17 @@ using Specification.Lite.Evaluators;
 
 namespace Specification.Test.Evaluators;
 
-public class AsTrackingEvaluatorTests
+public class AsNoTrackingWithIdentityResolutionEvaluatorTests
 {
     [Fact]
-    public void Evaluate_AppliesAsTracking_WhenSpecificationRequestsIt()
+    public void Evaluate_AppliesAsNoTrackingWithIdentityResolution_WhenSpecificationRequestsIt()
     {
         // Arrange
         IQueryable<TestEntity> data = new List<TestEntity> { new TestEntity { Id = 1 } }.AsQueryable();
         var mockSpec = new Mock<ISpecification<TestEntity>>();
-        mockSpec.Setup(s => s.AsTracking).Returns(true);
+        mockSpec.Setup(s => s.AsNoTrackingWithIdentityResolution).Returns(true);
 
-        AsTrackingEvaluator evaluator = AsTrackingEvaluator.Instance;
+        AsNoTrackingWithIdentityResolutionEvaluator evaluator = AsNoTrackingWithIdentityResolutionEvaluator.Instance;
 
         // Act
         IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec.Object);
@@ -25,14 +25,14 @@ public class AsTrackingEvaluatorTests
     }
 
     [Fact]
-    public void Evaluate_DoesNotApplyAsTracking_WhenSpecificationDoesNotRequestIt()
+    public void Evaluate_DoesNotApplyAsNoTrackingWithIdentityResolution_WhenSpecificationDoesNotRequestIt()
     {
         // Arrange
         IQueryable<TestEntity> data = new List<TestEntity> { new TestEntity { Id = 1 } }.AsQueryable();
         var mockSpec = new Mock<ISpecification<TestEntity>>();
-        mockSpec.Setup(s => s.AsTracking).Returns(false);
+        mockSpec.Setup(s => s.AsNoTrackingWithIdentityResolution).Returns(false);
 
-        AsTrackingEvaluator evaluator = AsTrackingEvaluator.Instance;
+        AsNoTrackingWithIdentityResolutionEvaluator evaluator = AsNoTrackingWithIdentityResolutionEvaluator.Instance;
 
         // Act
         IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec.Object);

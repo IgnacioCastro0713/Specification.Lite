@@ -12,6 +12,7 @@ public interface ISpecification<TEntity>
     int Skip { get; }
     bool AsTracking { get; }
     bool AsNoTracking { get; }
+    bool AsNoTrackingWithIdentityResolution { get; }
     bool AsSplitQuery { get; }
     bool IgnoreQueryFilters { get; }
 }

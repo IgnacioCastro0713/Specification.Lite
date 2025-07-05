@@ -54,21 +54,4 @@ public class ExceptionTests
         Assert.Equal("Duplicate use of Skip(). Ensure you don't use Skip() more than once in the same specification.", exception.Message);
         Assert.Equal(innerException, exception.InnerException);
     }
-
-    [Fact]
-    public void ConcurrentTrackingException_ShouldHaveCorrectMessage()
-    {
-        var exception = new ConcurrentTrackingException();
-        Assert.Equal("Cannot apply both AsNoTracking and AsTracking on the same specification.", exception.Message);
-    }
-
-    [Fact]
-    public void ConcurrentTrackingException_ShouldPropagateInnerException()
-    {
-        var innerException = new SelectorNotFoundException();
-        var exception = new ConcurrentTrackingException(innerException);
-
-        Assert.Equal("Cannot apply both AsNoTracking and AsTracking on the same specification.", exception.Message);
-        Assert.Equal(innerException, exception.InnerException);
-    }
 }

@@ -14,6 +14,7 @@ public class Specification<TEntity> : ISpecification<TEntity>
     public int Skip { get; internal set; } = -1;
     public bool AsTracking { get; internal set; } = false;
     public bool AsNoTracking { get; internal set; } = false;
+    public bool AsNoTrackingWithIdentityResolution { get; internal set; } = false;
     public bool AsSplitQuery { get; internal set; } = false;
     public bool IgnoreQueryFilters { get; internal set; } = false;
 }

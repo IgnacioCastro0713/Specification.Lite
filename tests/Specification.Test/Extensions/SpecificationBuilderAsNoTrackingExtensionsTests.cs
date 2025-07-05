@@ -1,6 +1,5 @@
 ﻿using API;
 using Specification.Lite;
-using Specification.Lite.Exceptions;
 
 namespace Specification.Test.Extensions;
 
@@ -45,18 +44,7 @@ public class SpecificationBuilderAsNoTrackingExtensionsTests
 
         // Assert
         Assert.True(specificationResult.AsNoTracking);
-        Assert.False(specificationResult.AsTracking); // Ensure AsTracking is not enabled
-    }
-
-
-    [Fact]
-    public void AsNoTracking_ShouldThrowException_WhenAsTrackingIsEnabled()
-    {
-        // Arrange
-        var specification = new Specification<TestEntity>();
-        specification.Query.AsTracking();
-
-        // Act & Assert
-        Assert.Throws<ConcurrentTrackingException>(() => specification.Query.AsNoTracking());
+        Assert.False(specificationResult.AsTracking);
+        Assert.False(specificationResult.AsNoTrackingWithIdentityResolution);
     }
 }
