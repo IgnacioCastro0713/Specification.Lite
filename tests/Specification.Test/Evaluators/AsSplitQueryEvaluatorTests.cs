@@ -5,7 +5,7 @@ using Specification.Lite.Evaluators;
 
 namespace Specification.Test.Evaluators;
 
-public class SplitQueryEvaluatorTests
+public class AsSplitQueryEvaluatorTests
 {
     public sealed class TestEntity { public int Id { get; set; } }
 
@@ -31,10 +31,10 @@ public class SplitQueryEvaluatorTests
         var mockSpec = new Mock<ISpecification<TestEntity>>();
         mockSpec.Setup(s => s.AsSplitQuery).Returns(true);
 
-        SplitQueryEvaluator evaluator = SplitQueryEvaluator.Instance;
+        AsSplitQueryEvaluator evaluator = AsSplitQueryEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(query, mockSpec.Object).ToList();
+        var result = evaluator.Query(query, mockSpec.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -57,10 +57,10 @@ public class SplitQueryEvaluatorTests
         var mockSpec = new Mock<ISpecification<TestEntity>>();
         mockSpec.Setup(s => s.AsSplitQuery).Returns(false);
 
-        SplitQueryEvaluator evaluator = SplitQueryEvaluator.Instance;
+        AsSplitQueryEvaluator evaluator = AsSplitQueryEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(query, mockSpec.Object).ToList();
+        var result = evaluator.Query(query, mockSpec.Object).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);

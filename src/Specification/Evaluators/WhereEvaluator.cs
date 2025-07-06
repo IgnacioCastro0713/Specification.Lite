@@ -4,7 +4,7 @@ public sealed class WhereEvaluator : IEvaluator
 {
     public static WhereEvaluator Instance { get; } = new();
 
-    public IQueryable<TEntity> Evaluate<TEntity>(
+    public IQueryable<TEntity> Query<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

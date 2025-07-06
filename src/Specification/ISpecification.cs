@@ -15,6 +15,7 @@ public interface ISpecification<TEntity>
     bool AsNoTrackingWithIdentityResolution { get; }
     bool AsSplitQuery { get; }
     bool IgnoreQueryFilters { get; }
+    bool IgnoreAutoIncludes { get; }
 }
 
 public interface ISpecification<TEntity, TResult> : ISpecification<TEntity>

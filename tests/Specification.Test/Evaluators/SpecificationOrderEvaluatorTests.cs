@@ -32,7 +32,7 @@ public class OrderEvaluatorTests
         OrderEvaluator evaluator = OrderEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         // Assert
         Assert.Equal(1, result[0].Id);
@@ -62,7 +62,7 @@ public class OrderEvaluatorTests
         OrderEvaluator evaluator = OrderEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         // Assert
         Assert.Equal(2, result[0].Id);
@@ -93,7 +93,7 @@ public class OrderEvaluatorTests
         OrderEvaluator evaluator = OrderEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         // Assert
         Assert.Equal("a", result[0].Name);
@@ -115,7 +115,7 @@ public class OrderEvaluatorTests
         OrderEvaluator evaluator = OrderEvaluator.Instance;
 
         // Act
-        IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec);
+        IQueryable<TestEntity> result = evaluator.Query(data, mockSpec);
 
         // Assert
         Assert.Equal(data, result);

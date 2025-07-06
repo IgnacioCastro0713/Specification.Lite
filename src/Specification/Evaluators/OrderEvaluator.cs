@@ -7,7 +7,7 @@ public sealed class OrderEvaluator : IEvaluator
 {
     public static OrderEvaluator Instance { get; } = new();
 
-    public IQueryable<TEntity> Evaluate<TEntity>(
+    public IQueryable<TEntity> Query<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

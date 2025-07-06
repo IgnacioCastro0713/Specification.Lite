@@ -29,13 +29,16 @@
   Effortlessly paginate query results using `Skip` and `Take` inside your specifications.
 
 - **Tracking:**  
-  Control whether entities are tracked by the context with `AsTracking` and `AsNoTracking` for optimal performance.
+  Control whether entities are tracked by the context with `AsTracking`, `AsNoTracking` and `AsNoTrackingWithIdentityResolution` for optimal performance.
 
 - **SplitQuery:**  
   Enables the use of EF Core’s `AsSplitQuery` to optimize queries containing multiple includes, preventing the cartesian explosion problem.
 
 - **IgnoreQueryFilters:**  
   Allows you to bypass global query filters (such as soft delete or multi-tenancy) by applying `IgnoreQueryFilters` in your specifications.
+
+- **IgnoreAutoIncludes:**  
+  Prevents Entity Framework Core from automatically applying `Include` statements configured in the model by using `IgnoreAutoIncludes` in your specifications. This gives you full control over which related entities are included in your queries.
 
 - **Entity Framework Integration:**  
   Seamlessly integrates with Entity Framework Core, making it easy to use specifications in your repositories or DbContext queries.
@@ -47,12 +50,12 @@
 Install via NuGet Package Manager:
 
 ```pwsh
-dotnet add package Specification.Lite --version 1.1.0
+dotnet add package Specification.Lite --version 1.2.0
 ```
 Or add to your project file:
 
 ```xml
-<PackageReference Include="Specification.Lite" Version="1.1.0" />
+<PackageReference Include="Specification.Lite" Version="1.2.0" />
 ```
 
 ---

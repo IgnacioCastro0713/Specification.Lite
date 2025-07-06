@@ -21,7 +21,7 @@ public class PagingEvaluatorTests
         PagingEvaluator evaluator = PagingEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         // Assert
         Assert.Equal(3, result.Count);
@@ -41,7 +41,7 @@ public class PagingEvaluatorTests
 
         PagingEvaluator evaluator = PagingEvaluator.Instance;
 
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         Assert.Equal(2, result.Count);
         Assert.Equal(1, result[0].Id);
@@ -61,7 +61,7 @@ public class PagingEvaluatorTests
 
         PagingEvaluator evaluator = PagingEvaluator.Instance;
 
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         Assert.Equal(4, result.Count); // Only skip is applied
         Assert.Equal(2, result[0].Id);

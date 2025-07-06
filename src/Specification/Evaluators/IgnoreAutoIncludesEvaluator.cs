@@ -2,17 +2,17 @@
 
 namespace Specification.Lite.Evaluators;
 
-public sealed class AsTrackingEvaluator : IEvaluator
+public sealed class IgnoreAutoIncludesEvaluator : IEvaluator
 {
-    public static AsTrackingEvaluator Instance { get; } = new();
+    public static IgnoreAutoIncludesEvaluator Instance { get; } = new();
 
     public IQueryable<TEntity> Query<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {
-        if (specification.AsTracking)
+        if (specification.IgnoreAutoIncludes)
         {
-            query = query.AsTracking();
+            query = query.IgnoreAutoIncludes();
         }
 
         return query;

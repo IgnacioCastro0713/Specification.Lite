@@ -38,7 +38,7 @@ public sealed class IncludesEvaluator : IEvaluator
     private sealed record CacheKey(IncludeType IncludeType, Type EntityType, Type PropertyType, Type? PreviousPropertyType = null);
     private static readonly ConcurrentDictionary<CacheKey, Func<IQueryable, LambdaExpression, IQueryable>> IncludeCache = new();
 
-    public IQueryable<TEntity> Evaluate<TEntity>(
+    public IQueryable<TEntity> Query<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

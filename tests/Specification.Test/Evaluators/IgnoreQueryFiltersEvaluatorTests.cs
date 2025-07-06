@@ -18,7 +18,7 @@ public class IgnoreQueryFiltersEvaluatorTests
         IgnoreQueryFiltersEvaluator evaluator = IgnoreQueryFiltersEvaluator.Instance;
 
         // Act
-        IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec.Object);
+        IQueryable<TestEntity> result = evaluator.Query(data, mockSpec.Object);
 
         // Assert
         Assert.IsAssignableFrom<IQueryable<TestEntity>>(result);
@@ -36,7 +36,7 @@ public class IgnoreQueryFiltersEvaluatorTests
         IgnoreQueryFiltersEvaluator evaluator = IgnoreQueryFiltersEvaluator.Instance;
 
         // Act
-        IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec.Object);
+        IQueryable<TestEntity> result = evaluator.Query(data, mockSpec.Object);
 
         // Assert
         Assert.IsAssignableFrom<IQueryable<TestEntity>>(result);

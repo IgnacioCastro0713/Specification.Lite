@@ -17,6 +17,7 @@ public class Specification<TEntity> : ISpecification<TEntity>
     public bool AsNoTrackingWithIdentityResolution { get; internal set; } = false;
     public bool AsSplitQuery { get; internal set; } = false;
     public bool IgnoreQueryFilters { get; internal set; } = false;
+    public bool IgnoreAutoIncludes { get; internal set; } = false;
 }
 
 public class Specification<TEntity, TResult> : Specification<TEntity>, ISpecification<TEntity, TResult>

@@ -14,7 +14,8 @@ public sealed class Evaluator
         AsNoTrackingWithIdentityResolutionEvaluator.Instance,
         AsTrackingEvaluator.Instance,
         IgnoreQueryFiltersEvaluator.Instance,
-        SplitQueryEvaluator.Instance
+        IgnoreAutoIncludesEvaluator.Instance,
+        AsSplitQueryEvaluator.Instance
     ];
 
     public IQueryable<TEntity> GetQuery<TEntity>(
@@ -23,6 +24,6 @@ public sealed class Evaluator
     {
         ArgumentNullException.ThrowIfNull(specification);
 
-        return _evaluators.Aggregate(query, (current, evaluator) => evaluator.Evaluate(current, specification));
+        return _evaluators.Aggregate(query, (current, evaluator) => evaluator.Query(current, specification));
     }
 }

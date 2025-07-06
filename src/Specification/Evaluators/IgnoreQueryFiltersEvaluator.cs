@@ -6,7 +6,7 @@ public sealed class IgnoreQueryFiltersEvaluator : IEvaluator
 {
     public static IgnoreQueryFiltersEvaluator Instance { get; } = new();
 
-    public IQueryable<TEntity> Evaluate<TEntity>(
+    public IQueryable<TEntity> Query<TEntity>(
         IQueryable<TEntity> query,
         ISpecification<TEntity> specification) where TEntity : class
     {

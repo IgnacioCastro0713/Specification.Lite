@@ -58,7 +58,7 @@ public class IncludesEvaluatorTests
         IncludesEvaluator evaluator = IncludesEvaluator.Instance;
 
         // Act
-        var result = evaluator.Evaluate(query, mockSpec.Object).ToList();
+        var result = evaluator.Query(query, mockSpec.Object).ToList();
 
         // Assert
         Assert.Single(result);

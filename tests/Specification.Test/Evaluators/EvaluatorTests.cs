@@ -45,7 +45,7 @@ public class EvaluatorTests
 
 public class DummyEvaluator : IEvaluator
 {
-    public IQueryable<TEntity> Evaluate<TEntity>(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    public IQueryable<TEntity> Query<TEntity>(IQueryable<TEntity> query, ISpecification<TEntity> specification)
         where TEntity : class
     {
         // Just return the query unchanged for dummy purposes

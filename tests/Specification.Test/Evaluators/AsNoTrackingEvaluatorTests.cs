@@ -18,7 +18,7 @@ public class AsNoTrackingEvaluatorTests
         AsNoTrackingEvaluator evaluator = AsNoTrackingEvaluator.Instance;
 
         // Act
-        IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec.Object);
+        IQueryable<TestEntity> result = evaluator.Query(data, mockSpec.Object);
 
         // Assert
         Assert.IsAssignableFrom<IQueryable<TestEntity>>(result);
@@ -35,7 +35,7 @@ public class AsNoTrackingEvaluatorTests
         AsNoTrackingEvaluator evaluator = AsNoTrackingEvaluator.Instance;
 
         // Act
-        IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec.Object);
+        IQueryable<TestEntity> result = evaluator.Query(data, mockSpec.Object);
 
         // Assert
         Assert.IsAssignableFrom<IQueryable<TestEntity>>(result);

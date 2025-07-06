@@ -32,7 +32,7 @@ public class WhereEvaluatorTests
         var evaluator = new WhereEvaluator();
 
         // Act
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         // Assert
         Assert.Equal(2, result.Count);
@@ -63,7 +63,7 @@ public class WhereEvaluatorTests
         var evaluator = new WhereEvaluator();
 
         // Act
-        var result = evaluator.Evaluate(data, mockSpec).ToList();
+        var result = evaluator.Query(data, mockSpec).ToList();
 
         // Assert
         Assert.Single(result);
@@ -85,7 +85,7 @@ public class WhereEvaluatorTests
         var evaluator = new WhereEvaluator();
 
         // Act
-        IQueryable<TestEntity> result = evaluator.Evaluate(data, mockSpec);
+        IQueryable<TestEntity> result = evaluator.Query(data, mockSpec);
 
         // Assert
         Assert.Equal(data, result);
