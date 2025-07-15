@@ -105,6 +105,7 @@ public class RecentActiveUsersWithOrdersSpec : Specification<User, UserSummaryDt
     public RecentActiveUsersWithOrdersSpec(DateTime since, int skip, int take)
     {
         Query
+            .TagWith("Tag in spec query")
             .Where(u => u.IsActive && u.RegisteredAt >= since)
             .Include(u => u.Orders)
                 .ThenInclude(o => o.OrderItems)
