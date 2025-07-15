@@ -40,6 +40,9 @@
 - **IgnoreAutoIncludes:**  
   Prevents Entity Framework Core from automatically applying `Include` statements configured in the model by using `IgnoreAutoIncludes` in your specifications. This gives you full control over which related entities are included in your queries.
 
+- **WithTag:**  
+  Annotate queries with a custom tag using `WithTag` to improve query diagnostics and debugging. This is especially useful for identifying specific queries in logs or performance monitoring tools.
+
 - **Entity Framework Integration:**  
   Seamlessly integrates with Entity Framework Core, making it easy to use specifications in your repositories or DbContext queries.
 
@@ -50,12 +53,12 @@
 Install via NuGet Package Manager:
 
 ```pwsh
-dotnet add package Specification.Lite --version 1.2.0
+dotnet add package Specification.Lite --version 1.3.0
 ```
 Or add to your project file:
 
 ```xml
-<PackageReference Include="Specification.Lite" Version="1.2.0" />
+<PackageReference Include="Specification.Lite" Version="1.3.0" />
 ```
 
 ---
