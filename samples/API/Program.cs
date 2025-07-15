@@ -13,11 +13,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddDbContext<TestDbContext>(options =>
 {
-    options.UseInMemoryDatabase("TestDb");
+    string currentDirectory = Directory.GetCurrentDirectory();
+    string dbPath = Path.Combine(currentDirectory, "TESTDB.db");
+    options.UseSqlite($"Data Source={dbPath}");
     options.LogTo(
             Console.WriteLine,
-            [DbLoggerCategory.Database.Command.Name], Microsoft.Extensions.Logging.LogLevel.Information)
-        .EnableSensitiveDataLogging(); // For debugging, use with caution in production
+            [DbLoggerCategory.Database.Command.Name], LogLevel.Information)
+        .EnableSensitiveDataLogging();
 });
 
 
@@ -28,10 +30,7 @@ using (IServiceScope scope = app.Services.CreateScope())
 {
     IServiceProvider services = scope.ServiceProvider;
     TestDbContext context = services.GetRequiredService<TestDbContext>();
-    ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>(); // Use a logger for Program.cs
-
-    // Your existing seeding logic from TestRepository constructor goes here
-    // It's more robust to have a dedicated seeder class or method.
+    ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>();
     try
     {
         if (!context.TestEntities.Any())
@@ -46,8 +45,7 @@ using (IServiceScope scope = app.Services.CreateScope())
             );
             context.SaveChanges();
         }
-        // ... include all other seeding logic for TestNestedEntities, TestRelatedEntities, TestEntityWithRelations
-        // For example:
+
         if (!context.TestNestedEntities.Any())
         {
             logger.LogInformation("Seeding TestNestedEntities...");
