@@ -18,6 +18,7 @@ public class Specification<TEntity> : ISpecification<TEntity>
     public bool AsSplitQuery { get; internal set; } = false;
     public bool IgnoreQueryFilters { get; internal set; } = false;
     public bool IgnoreAutoIncludes { get; internal set; } = false;
+    public List<string> QueryTags { get; internal set; } = [];
 }
 
 public class Specification<TEntity, TResult> : Specification<TEntity>, ISpecification<TEntity, TResult>

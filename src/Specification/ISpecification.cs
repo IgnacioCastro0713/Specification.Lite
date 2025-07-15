@@ -16,6 +16,7 @@ public interface ISpecification<TEntity>
     bool AsSplitQuery { get; }
     bool IgnoreQueryFilters { get; }
     bool IgnoreAutoIncludes { get; }
+    List<string> QueryTags { get; }
 }
 
 public interface ISpecification<TEntity, TResult> : ISpecification<TEntity>

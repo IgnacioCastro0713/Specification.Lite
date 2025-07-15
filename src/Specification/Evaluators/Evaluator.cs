@@ -15,7 +15,8 @@ public sealed class Evaluator
         AsTrackingEvaluator.Instance,
         IgnoreQueryFiltersEvaluator.Instance,
         IgnoreAutoIncludesEvaluator.Instance,
-        AsSplitQueryEvaluator.Instance
+        AsSplitQueryEvaluator.Instance,
+        TagWithEvaluator.Instance
     ];
 
     public IQueryable<TEntity> GetQuery<TEntity>(
